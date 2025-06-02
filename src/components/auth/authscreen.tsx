@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Shield, Mail, Lock, User } from "lucide-react";
+import axios from 'axios'
+import { toast } from "sonner";
 
 interface AuthScreenProps {
     currentScreen: 'login' | 'signup';
@@ -18,11 +20,60 @@ export const AuthScreen = ({ currentScreen, onLogin, onSwitchToSignup, onSwitchT
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleLogin = (e: React.FormEvent) => {
+        e.preventDefault();
+        // Add your login logic here
+        onLogin();
+    };
+
+    const handleSignup = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        try {
+            const res = await axios.post(
+                '/api/auth/signup',
+                { email, password, name },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            console.log("data", res.data);
+            toast.success("Account created successfully! Welcome aboard!");
+
+            setEmail("");
+            setPassword("");
+            setName("");
+
+           
+            onLogin();
+            // Clear form fields
+            setEmail("");
+            setPassword("");
+            setName("");
+
+            // Switch to login screen after successful signup
+            onSwitchToLogin();
+
+        } catch (err: any) {
+            const message = err.response?.data?.message || "Something went wrong";
+            toast.error(message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        // Simulate authentication
-        onLogin();
+        if (currentScreen === 'login') {
+            handleLogin(e);
+        } else {
+            handleSignup(e);
+        }
     };
 
     return (
@@ -64,6 +115,7 @@ export const AuthScreen = ({ currentScreen, onLogin, onSwitchToSignup, onSwitchT
                                         onChange={(e) => setName(e.target.value)}
                                         className="pl-10 h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                                         required
+                                        disabled={isLoading}
                                     />
                                 </div>
                             </div>
@@ -81,6 +133,7 @@ export const AuthScreen = ({ currentScreen, onLogin, onSwitchToSignup, onSwitchT
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="pl-10 h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                                     required
+                                    disabled={isLoading}
                                 />
                             </div>
                         </div>
@@ -97,15 +150,20 @@ export const AuthScreen = ({ currentScreen, onLogin, onSwitchToSignup, onSwitchT
                                     onChange={(e) => setPassword(e.target.value)}
                                     className="pl-10 h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                                     required
+                                    disabled={isLoading}
                                 />
                             </div>
                         </div>
 
                         <Button
                             type="submit"
-                            className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+                            className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled={isLoading}
                         >
-                            {currentScreen === 'login' ? 'Sign In' : 'Create Account'}
+                            {isLoading
+                                ? (currentScreen === 'login' ? 'Signing In...' : 'Creating Account...')
+                                : (currentScreen === 'login' ? 'Sign In' : 'Create Account')
+                            }
                         </Button>
                     </form>
 
@@ -114,7 +172,8 @@ export const AuthScreen = ({ currentScreen, onLogin, onSwitchToSignup, onSwitchT
                             {currentScreen === 'login' ? "Don't have an account? " : "Already have an account? "}
                             <button
                                 onClick={currentScreen === 'login' ? onSwitchToSignup : onSwitchToLogin}
-                                className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
+                                className="text-blue-600 hover:text-blue-700 font-medium transition-colors disabled:opacity-50"
+                                disabled={isLoading}
                             >
                                 {currentScreen === 'login' ? 'Sign up' : 'Sign in'}
                             </button>

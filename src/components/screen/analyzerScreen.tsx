@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, FileText, Save, RotateCcw, Shield, CheckCircle } from "lucide-react";
-
+import { toast } from "sonner";
 
 export const AnalyzerScreen = () => {
     const [termsText, setTermsText] = useState("");
@@ -15,15 +15,11 @@ export const AnalyzerScreen = () => {
         summary: string;
         riskyPhrases: Array<{ phrase: string; explanation: string; severity: 'high' | 'medium' | 'low' }>;
     } | null>(null);
-    const { toast } = useToast();
+  
 
     const handleAnalyze = async () => {
         if (!termsText.trim()) {
-            toast({
-                title: "Empty Input",
-                description: "Please paste some terms and conditions to analyze.",
-                variant: "destructive",
-            });
+            toast.info( "Please paste some terms and conditions to analyze");
             return;
         }
 
@@ -71,10 +67,7 @@ export const AnalyzerScreen = () => {
     };
 
     const handleSave = () => {
-        toast({
-            title: "Analysis Saved",
-            description: "Your analysis has been saved successfully.",
-        });
+        toast.success("Your analysis has been saved successfully")
     };
 
     const getSeverityColor = (severity: string) => {
