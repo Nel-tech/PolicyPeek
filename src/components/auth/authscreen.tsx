@@ -22,10 +22,35 @@ export const AuthScreen = ({ currentScreen, onLogin, onSwitchToSignup, onSwitchT
     const [name, setName] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Add your login logic here
-        onLogin();
+        setIsLoading(true);
+
+        try {
+            const res = await axios.post(
+                '/api/auth/login',
+                { email, password },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            console.log("data", res.data);
+            toast.success("Login successful! Welcome back");
+
+            // Clear form fields
+            setEmail("");
+            setPassword("");
+
+            onLogin();
+        } catch (err: any) {
+            const message = err.response?.data?.message || "Something went wrong";
+            toast.error(message);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const handleSignup = async (e: React.FormEvent) => {
@@ -45,20 +70,11 @@ export const AuthScreen = ({ currentScreen, onLogin, onSwitchToSignup, onSwitchT
 
             console.log("data", res.data);
             toast.success("Account created successfully! Welcome aboard!");
-
             setEmail("");
             setPassword("");
             setName("");
-
-           
+            
             onLogin();
-            // Clear form fields
-            setEmail("");
-            setPassword("");
-            setName("");
-
-            // Switch to login screen after successful signup
-            onSwitchToLogin();
 
         } catch (err: any) {
             const message = err.response?.data?.message || "Something went wrong";

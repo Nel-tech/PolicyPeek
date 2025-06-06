@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, FileText, Save, RotateCcw, Shield, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
+import { useModel } from "@/hooks/use-model";
 
 export const AnalyzerScreen = () => {
     const [termsText, setTermsText] = useState("");
@@ -16,49 +17,23 @@ export const AnalyzerScreen = () => {
         riskyPhrases: Array<{ phrase: string; explanation: string; severity: 'high' | 'medium' | 'low' }>;
     } | null>(null);
   
+    const {mutateAsync} =useModel()
 
-    const handleAnalyze = async () => {
+    const handleAnalyze = async (e: React.FormEvent) => {
+        e.preventDefault()
         if (!termsText.trim()) {
             toast.info( "Please paste some terms and conditions to analyze");
             return;
         }
-
-        setIsAnalyzing(true);
-
-        // Simulate analysis
-        setTimeout(() => {
-            setAnalysis({
-                summary: "This terms of service agreement outlines user responsibilities, data collection practices, and service limitations. The company reserves broad rights to modify terms and terminate accounts. Users grant extensive content licensing rights and waive certain legal protections.",
-                riskyPhrases: [
-                    {
-                        phrase: "unlimited license to use your content",
-                        explanation: "You're giving the company very broad rights to use anything you post",
-                        severity: 'high'
-                    },
-                    {
-                        phrase: "may terminate your account at any time",
-                        explanation: "The company can delete your account without warning",
-                        severity: 'high'
-                    },
-                    {
-                        phrase: "collect and share personal information",
-                        explanation: "Your personal data may be shared with third parties",
-                        severity: 'medium'
-                    },
-                    {
-                        phrase: "changes effective immediately",
-                        explanation: "Terms can be updated without notice period",
-                        severity: 'medium'
-                    },
-                    {
-                        phrase: "as-is without warranties",
-                        explanation: "The service comes with no guarantees if something goes wrong",
-                        severity: 'low'
-                    }
-                ]
-            });
+        try {
+           setIsAnalyzing(true) 
+            const data = await mutateAsync({ text: termsText }); 
+            setAnalysis(data); 
+        } catch (err) {
+            console.error("Analysis failed", err);
+        } finally {
             setIsAnalyzing(false);
-        }, 2000);
+        }
     };
 
     const handleClear = () => {
