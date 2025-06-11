@@ -4,6 +4,7 @@ import { Toaster } from 'sonner'
 import "./globals.css";
 import Providers from "@/app/provider";
 
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -29,8 +30,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>
 
+        <Providers>
           <Toaster richColors />
           {children}
         </Providers>

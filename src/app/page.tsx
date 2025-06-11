@@ -1,26 +1,26 @@
 'use client'
-
 import { useState } from "react";
-import { AuthScreen } from "@/components/auth/authscreen";
-import { AnalyzerScreen } from "@/components/screen/analyzerScreen";
 import { Breadcrumbs } from "@/components/crumbs/breadCrumbs";
+import { CoverPage } from "@/components/cover/coverscreen";
 
-const Home = () => {
+
+const Index = () => {
+
+  // const session = await getServerSession(authOptions)
+
+  // if (!session) {
+  //   redirect('/login')
+  // }
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [currentScreen, setCurrentScreen] = useState<'login' | 'signup' | 'analyzer'>('login');
+  const [currentScreen, setCurrentScreen] = useState<'cover' | 'login' | 'signup'>('cover');
 
-  const handleLogin = () => {
-    setIsAuthenticated(true);
-    setCurrentScreen('analyzer');
-  };
+
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    setCurrentScreen('login');
+    setCurrentScreen('cover');
   };
 
-  const handleSwitchToSignup = () => setCurrentScreen('signup');
-  const handleSwitchToLogin = () => setCurrentScreen('login');
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-slate-50 to-blue-50">
@@ -32,19 +32,15 @@ const Home = () => {
           />
         )}
 
-        {!isAuthenticated ? (
-          <AuthScreen
-            currentScreen={currentScreen}
-            onLogin={handleLogin}
-            onSwitchToSignup={handleSwitchToSignup}
-            onSwitchToLogin={handleSwitchToLogin}
-          />
-        ) : (
-          <AnalyzerScreen />
-        )}
+       
+          <CoverPage/>
+         
+         
+         
+        
       </div>
     </div>
   );
 };
 
-export default Home;
+export default Index;
