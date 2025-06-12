@@ -23,6 +23,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   summaries     Summary[] 
+  passwordResets PasswordReset[]
 }
 
 model Summary {
@@ -34,6 +35,15 @@ model Summary {
   flags         String[]
   createdAt     DateTime @default(now())
 }
+model PasswordReset {
+  token     String   @id
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
 
 model Account {
   id                 String  @id @default(cuid())

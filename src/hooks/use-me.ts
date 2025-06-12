@@ -1,5 +1,5 @@
-import { useMutation } from "@tanstack/react-query";
-import { updateUser } from "@/lib/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { updateUser, getUserSummary } from "@/lib/api";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 
@@ -38,5 +38,17 @@ export const useUpdateProfileMutation = () => {
       toast.error(errorMessage);
       console.error("Error updating profile:", error);
     },
+  });
+};
+
+export const useUserSummary = () => {
+  return useQuery({
+    queryKey: ['user-summary'],
+    queryFn: getUserSummary,
+    staleTime: 1000 * 60 * 5,     
+    refetchOnWindowFocus: true,   
+    refetchInterval: false,       
+    enabled: true,                
+    retry: 1                      
   });
 };

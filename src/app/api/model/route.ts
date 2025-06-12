@@ -4,18 +4,49 @@ import { authOptions } from '@/lib/auth';
 import axios from 'axios';
 import { prisma } from '@/lib/prisma'; 
 
-
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
 
 interface TextSummaryRequest {
   text: string;
 }
 
+// Updated interfaces to match the new API response
+interface RiskInfo {
+  type: string;
+  severity: string;
+  context: string;
+  matched_text: string;
+}
 
+interface RisksData {
+  high: RiskInfo[];
+  medium: RiskInfo[];
+  low: RiskInfo[];
+  total_count: number;
+}
+
+interface RiskScore {
+  score: number;
+  percentage: number;
+  level: string;
+}
+
+interface ExternalAPIResponse {
+  summary: string;
+  risks: RisksData;
+  risk_score: RiskScore;
+  flags: string[];
+  stats?: {
+    word_count: number;
+    character_count: number;
+    estimated_reading_time: number;
+    summary_reduction: number;
+  };
+  processing_time: number;
+  language_detected?: string;
+}
 
 export async function POST(request: NextRequest) {
-  console.log('🚀 API Route called');
   
   try {
     // Get session from server-side with better error handling
@@ -97,17 +128,20 @@ export async function POST(request: NextRequest) {
       headers: {
         "Content-Type": "application/json"
       },
+      timeout: 30000, // 30 second timeout
     });
 
     console.log('✅ External API response received:', {
       status: response.status,
-      hasData: !!response.data
+      hasData: !!response.data,
+      riskCount: response.data?.risks?.total_count || 0,
+      riskLevel: response.data?.risk_score?.level || 'UNKNOWN'
     });
 
-    const {summary, flags, stats } = response.data;
+    const analysisData: ExternalAPIResponse = response.data;
     
     // Validate external API response
-    if (!summary) {
+    if (!analysisData.summary) {
       console.error('❌ Invalid response from external API - missing summary');
       return NextResponse.json(
         { error: "Invalid response from analysis service" }, 
@@ -117,29 +151,34 @@ export async function POST(request: NextRequest) {
     
     console.log('💾 Saving to database...');
     
-    // Save to database with error handling
+    // Save to database with enhanced data
     const saved = await prisma.summary.create({
       data: {
         userId: String(userId), 
-        summary,
+        summary: analysisData.summary,
         original_text: text,
-        flags: flags || [],
+        flags: analysisData.flags || [],
+        
       },
     });
 
-    // Calculate stats
-    const wordCount = text.trim().split(/\s+/).length;
+    // Build comprehensive frontend response
     const frontendResponse = {
       summary: saved.summary,
       flags: saved.flags,
+      risks: analysisData.risks,
+      risk_score: analysisData.risk_score,
       stats: {
-        word_count: wordCount,
-        character_count: text.length,
-        
-      }
+        word_count: analysisData.stats?.word_count || text.trim().split(/\s+/).length,
+        character_count: analysisData.stats?.character_count || text.length,
+        estimated_reading_time: analysisData.stats?.estimated_reading_time || Math.ceil(text.trim().split(/\s+/).length / 200),
+        summary_reduction: analysisData.stats?.summary_reduction || 0
+      },
+      processing_time: analysisData.processing_time,
+      language_detected: analysisData.language_detected
     };
 
-    console.log('🎉 Success! Summary saved with ID:', saved.id);
+   
     return NextResponse.json(frontendResponse);
     
   } catch (error: any) {
@@ -155,20 +194,40 @@ export async function POST(request: NextRequest) {
         url: error.config?.url
       });
       
-      if (error.code === 'ECONNREFUSED') {
+      if (error.code === 'ECONNREFUSED' || error.code === 'ECONNRESET') {
         return NextResponse.json(
           { error: "External analysis service is unavailable" },
           { status: 503 }
         );
       }
       
+      if (error.code === 'ECONNABORTED') {
+        return NextResponse.json(
+          { error: "Analysis request timed out - text may be too long" },
+          { status: 408 }
+        );
+      }
+      
       if (error.response?.status === 400) {
         return NextResponse.json(
-          { error: "Invalid text provided for analysis" },
+          { error: error.response.data?.detail || "Invalid text provided for analysis" },
           { status: 400 }
         );
       }
       
+      if (error.response?.status === 422) {
+        return NextResponse.json(
+          { error: error.response.data?.detail || "Text validation failed" },
+          { status: 422 }
+        );
+      }
+      
+      if (error.response?.status === 503) {
+        return NextResponse.json(
+          { error: "Analysis service is temporarily unavailable" },
+          { status: 503 }
+        );
+      }
     }
     
     // Handle Prisma/Database errors
@@ -188,5 +247,52 @@ export async function POST(request: NextRequest) {
       },
       { status: 500 }
     );
+  }
+}
+
+
+export async function GET(request: Request) {
+  try {
+    const session = await getServerSession(authOptions)
+
+    console.log('Session check:', {
+      hasSession: !!session,
+      hasUser: !!session?.user,
+      userEmail: session?.user?.email,
+      userId: (session?.user as any)?.id
+    })
+
+    if (!session || !session.user) {
+      console.log('❌ No valid session found')
+      return NextResponse.json(
+        {
+          error: "Authentication required",
+          details: "Please sign in to use this feature"
+        },
+        { status: 401 }
+      )
+    }
+
+    const userId = (session.user as any)?.id
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: "User ID missing in session" },
+        { status: 400 }
+      )
+    }
+
+    const summaries = await prisma.summary.findMany({
+      where: { userId }
+    })
+
+    return NextResponse.json(summaries)
+
+  } catch (error) {
+    console.error('Error fetching summaries:', error)
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    )
   }
 }

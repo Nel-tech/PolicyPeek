@@ -12,31 +12,56 @@ import { AlertTriangle, FileText, Save, RotateCcw, CheckCircle, FolderOpen, Sett
 import { useModel } from "@/hooks/use-model";
 import { toast } from "sonner";
 import { Logo } from "@/components/logo";
-import { useMe, useUpdateProfileMutation } from "@/hooks/use-me";
+import { useMe, useUpdateProfileMutation, useUserSummary } from "@/hooks/use-me";
+import { summaryTypes } from "@/types/types";
+import UserSkeleton from "@/components/loader";
+import ErrorMessage from "@/components/error";
 
+interface RiskInfo {
+    type: string;
+    severity: string;
+    context: string;
+    matched_text: string;
+}
+
+interface RisksData {
+    high: RiskInfo[];
+    medium: RiskInfo[];
+    low: RiskInfo[];
+    total_count: number;
+}
+
+interface RiskScore {
+    score: number;
+    percentage: number;
+    level: string;
+}
 const AnalyzerScreen = () => {
     const [termsText, setTermsText] = useState("");
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [analysis, setAnalysis] = useState<{
         summary: string;
+        risks: RisksData;
+        risk_score: RiskScore;
         flags: string[];
         stats?: {
             word_count: number;
             character_count: number;
+            estimated_reading_time: number;
+            summary_reduction: number;
         };
+        processing_time: number;
+        language_detected?: string;
     } | null>(null);
 
     // Account settings state
     const [name, setName] = useState("");
     const [Email, setEmail] = useState("");
-    const [currentPassword, setCurrentPassword] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-
     const { mutateAsync } = useModel()
     const updateProfile = useUpdateProfileMutation();
     const { data: userData, isLoading, error } = useMe();
-    
+    const { data: UserSummary } = useUserSummary()
+
     useEffect(() => {
         if (userData) {
             setName(userData.name || "");
@@ -53,7 +78,7 @@ const AnalyzerScreen = () => {
         setEmail(e.target.value);
     };
 
-    const handleUpdateProfile = async (e:React.FormEvent) => {
+    const handleUpdateProfile = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!name.trim()) {
@@ -65,24 +90,24 @@ const AnalyzerScreen = () => {
             toast.info('Email is required');
             return;
         }
-      
+
         const updateData = {
             name: name.trim(),
             email: Email.trim(),
         };
-        updateProfile.mutate(updateData); 
+        updateProfile.mutate(updateData);
     };
 
     if (isLoading) {
-        return <div>Loading user data...</div>;
+        return <UserSkeleton/>;
     }
 
-    // Error state
+ 
     if (error) {
-        return <div>Error loading user data: {error.message}</div>;
+        return <ErrorMessage message={error.message} />
     }
 
-   
+
 
     const handleAnalyze = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -137,20 +162,8 @@ const AnalyzerScreen = () => {
         toast.success("Your account information has been updated successfully.")
     };
 
-    const handleChangePassword = () => {
-        if (newPassword !== confirmPassword) {
-            toast.error("New password and confirmation do not match.");
-            return;
-        }
 
-        toast.success("Your password has been updated successfully.");
 
-        setCurrentPassword("");
-        setNewPassword("");
-        setConfirmPassword("");
-    };
-
-    
 
 
     return (
@@ -305,11 +318,59 @@ const AnalyzerScreen = () => {
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-center py-8">
-                                <FolderOpen className="w-12 h-12 text-slate-400 mx-auto mb-4" />
-                                <p className="text-slate-500">No saved analyses yet</p>
-                                <p className="text-sm text-slate-400">Your saved analyses will appear here</p>
-                            </div>
+                            {UserSummary?.length === 0 ? (
+                                <div className="text-center py-8">
+                                    <FolderOpen className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+                                    <p className="text-slate-500">No saved analyses yet</p>
+                                    <p className="text-sm text-slate-400">Your saved analyses will appear here</p>
+
+                                </div>
+                            ) : (
+                                <div>
+                                    <section>
+                                            {UserSummary?.map((summary: summaryTypes) => {
+                                                return (
+                                                    <div key={summary.id} className="space-y-4 mb-6">
+                                                        <p className="text-sm text-gray-700">{summary?.summary}</p>
+
+                                                        {summary?.flags.length > 0 ? (
+                                                            summary?.flags.map((flag, index) => {
+                                                                const severity = getFlagSeverity(flag);
+                                                                return (
+                                                                    <div
+                                                                        key={index}
+                                                                        className="p-3 bg-gray-50 rounded-lg border border-gray-100"
+                                                                    >
+                                                                        <div className="flex items-start gap-3">
+                                                                            <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                                                                            <div className="flex-1 space-y-2">
+                                                                                <div className="flex items-center gap-2">
+                                                                                    <span className="text-sm text-gray-800">{flag}</span>
+                                                                                    <Badge
+                                                                                        variant="outline"
+                                                                                        className={`text-xs ${getSeverityColor(severity)}`}
+                                                                                    >
+                                                                                        {severity}
+                                                                                    </Badge>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                );
+                                                            })
+                                                        ) : (
+                                                            <p className="text-sm text-gray-500 text-center py-4">
+                                                                No concerning phrases detected
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                );
+                                            })}
+
+
+                                    </section>
+                                </div>
+                            )}
                         </CardContent>
                     </Card>
                 </TabsContent>
@@ -319,50 +380,50 @@ const AnalyzerScreen = () => {
                     <div className="space-y-6">
                         {/* Account Information */}
                         <form onSubmit={handleUpdateProfile}>
-                        <Card className="border border-slate-200 bg-white/70 backdrop-blur-sm">
-                            <CardHeader>
-                                <CardTitle className="flex items-center gap-2 text-slate-800">
-                                    <User className="w-5 h-5 text-blue-600" />
-                                    Account Information
-                                </CardTitle>
-                                <CardDescription className="text-slate-600">
-                                    Update your personal information
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent className="space-y-4">
-                                <div className="space-y-2">
-                                    <Label htmlFor="account-name" className="text-sm font-medium text-slate-700">Full Name</Label>
-                                    <Input
-                                        id="account-name"
-                                        type="text"
-                                        defaultValue={name}
-                                        onChange={handleNameChange}
-                                        className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
-                                    />
-                                </div>
+                            <Card className="border border-slate-200 bg-white/70 backdrop-blur-sm">
+                                <CardHeader>
+                                    <CardTitle className="flex items-center gap-2 text-slate-800">
+                                        <User className="w-5 h-5 text-blue-600" />
+                                        Account Information
+                                    </CardTitle>
+                                    <CardDescription className="text-slate-600">
+                                        Update your personal information
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="account-name" className="text-sm font-medium text-slate-700">Full Name</Label>
+                                        <Input
+                                            id="account-name"
+                                            type="text"
+                                            defaultValue={name}
+                                            onChange={handleNameChange}
+                                            className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                                        />
+                                    </div>
 
-                                <div className="space-y-2">
-                                    <Label htmlFor="account-email" className="text-sm font-medium text-slate-700">Email Address</Label>
-                                    <Input
-                                        id="account-email"
-                                        type="email"
-                                        defaultValue={Email}
-                                        onChange={handleEmailChange}
-                                        className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
-                                    />
-                                </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="account-email" className="text-sm font-medium text-slate-700">Email Address</Label>
+                                        <Input
+                                            id="account-email"
+                                            type="email"
+                                            defaultValue={Email}
+                                            onChange={handleEmailChange}
+                                            className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
+                                        />
+                                    </div>
 
-                                <Button
-                                    onClick={handleUpdateAccount}
-                                    className="bg-blue-600 hover:bg-blue-700 text-white"
-                                >
-                                    Update Account
-                                </Button>
-                            </CardContent>
-                        </Card>
+                                    <Button
+                                        onClick={handleUpdateAccount}
+                                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                                    >
+                                        Update Account
+                                    </Button>
+                                </CardContent>
+                            </Card>
                         </form>
 
-                       
+
                         {/* Logout */}
                         <Card className="border border-slate-200 bg-white/70 backdrop-blur-sm">
                             <CardHeader>
