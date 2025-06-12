@@ -10,6 +10,7 @@ import { signIn, getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { toast } from "sonner";
 import { Logo } from "@/components/logo";
+import Link from "next/link";
 
 
 function LoginPage() {
@@ -112,6 +113,14 @@ function LoginPage() {
                                     disabled={isLoading}
                                 />
                             </div>
+                            <div className="text-right">
+                                <Link
+                                    href="/request-reset"
+                                    className="text-sm text-blue-600 hover:underline"
+                                >
+                                    Forgot password?
+                                </Link>
+                            </div>
                         </div>
 
                         <Button
@@ -119,16 +128,19 @@ function LoginPage() {
                             className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                             disabled={isLoading}
                         >
-                            {isLoading
-                                ? 'Signing In...' : 'Login'
-
-                            }
+                            {isLoading ? 'Signing In...' : 'Login'}
                         </Button>
                     </form>
 
 
                 </CardContent>
             </Card>
+            <p className="mt-5 text-center text-sm/6 text-gray-500">
+                Don&#39;t have an account?{' '}
+                <Link href="/signup" className="font-semibold text-blue-600 hover:text-blue-700">
+                    Create one
+                </Link>
+            </p>
         </div>
     )
 }

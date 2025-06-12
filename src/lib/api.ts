@@ -109,30 +109,30 @@ export const getUserSummary = async () => {
   }
 }
 
-export const handleRequest = async(email:RequestToken ) => {
-  try{
-    const response = await axios.post('/api/auth/me',email, {
-       headers: {
+export const handleRequest = async (data: RequestToken) => {
+  try {
+    const response = await axios.post('/api/auth/request-password-reset', data, {
+      headers: {
         'Content-Type': 'application/json',
       },
-    })
+    });
     return response.data;
   } catch (error) {
     console.error("Error sending user request:", error);
     throw error;
   }
-}
+};
 
-export const handlePasswordReset = async(userData:ResetPasswordRequest ) => {
-  try{
-    const response = await axios.post('/api/auth/me',userData, {
-       headers: {
+export const handlePasswordReset = async (userData: ResetPasswordRequest) => {
+  try {
+    const response = await axios.post('/api/auth/reset-password', userData, {
+      headers: {
         'Content-Type': 'application/json',
       },
-    })
+    });
     return response.data;
   } catch (error) {
-    console.error("Error reseting user password:", error);
+    console.error("Error resetting user password:", error);
     throw error;
   }
-}
+};

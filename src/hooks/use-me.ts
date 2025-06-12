@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { updateUser, getUserSummary } from "@/lib/api";
+import { updateUser, getUserSummary, handlePasswordReset, handleRequest } from "@/lib/api";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 
@@ -50,5 +50,33 @@ export const useUserSummary = () => {
     refetchInterval: false,       
     enabled: true,                
     retry: 1                      
+  });
+};
+
+export const useHandleRequestToken = () => {
+  return useMutation({
+    mutationFn: handleRequest,
+    onSuccess: async () => {
+      toast.success("Reset token generated successfully.");
+    },
+    onError: (error: any) => {
+      const errorMessage = error.response?.data?.error || "Failed to request reset token.";
+      toast.error(errorMessage);
+      console.error("Request token error:", error);
+    },
+  });
+};
+
+export const useHandleResetPassword = () => {
+  return useMutation({
+    mutationFn: handlePasswordReset,
+    onSuccess: async () => {
+      toast.success("Password reset successfully.");
+    },
+    onError: (error: any) => {
+      const errorMessage = error.response?.data?.error || "Failed to reset password.";
+      toast.error(errorMessage);
+      console.error("Password reset error:", error);
+    },
   });
 };
