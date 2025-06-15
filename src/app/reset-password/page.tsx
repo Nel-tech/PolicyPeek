@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from "react"
-import { useHandleResetPassword } from "@/hooks/use-me"
+import { useHandleResetPassword } from "@/hooks/use-auth"
 import { useRouter } from "next/navigation"
 
 function ResetPasswordForm() {
@@ -10,13 +10,13 @@ function ResetPasswordForm() {
     const router = useRouter()
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault() 
+        e.preventDefault()
 
         mutation.mutate(
             { newPassword, resetToken },
             {
                 onSuccess: () => {
-                    router.push('/auth/login') 
+                    router.push('/auth/login')
                 }
             }
         )

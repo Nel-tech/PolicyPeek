@@ -1,6 +1,6 @@
 'use client'
 
-import { useHandleRequestToken } from "@/hooks/use-me"
+import { useHandleRequestToken } from "@/hooks/use-auth"
 import React, { useState } from "react"
 import {
   Dialog,
@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Copy } from "lucide-react"
-import { toast } from "sonner" // Optional: toast feedback when copied
+import { toast } from "sonner" 
 
 function RequestResetForm() {
   const [email, setEmail] = useState('')

@@ -9,13 +9,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertTriangle, FileText, Save, RotateCcw, CheckCircle, FolderOpen, Settings, LogOut, User, Mail, Lock } from "lucide-react";
-import { useModel } from "@/hooks/use-model";
+import { useModel, useGetAnalysis, useSaveAnalysis, useDeleteAnalysis } from "@/hooks/use-model";
 import { toast } from "sonner";
 import { Logo } from "@/components/logo";
-import { useMe, useUpdateProfileMutation, useUserSummary } from "@/hooks/use-me";
+import { useUpdateProfileMutation } from "@/hooks/use-auth";
 import { summaryTypes } from "@/types/types";
-import UserSkeleton from "@/components/loader";
-import ErrorMessage from "@/components/error"
+// import UserSkeleton from "@/components/loader";
+// import ErrorMessage from "@/components/error"
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+ import { useAuthStore } from "@/store/useAuthStore";
+ import { useRouter } from "next/navigation";
+import { Trash2 } from 'lucide-react';
 
 
 interface RiskInfo {
@@ -37,9 +41,26 @@ interface RiskScore {
     percentage: number;
     level: string;
 }
+
+
+
 const AnalyzerScreen = () => {
     const [termsText, setTermsText] = useState("");
     const [isAnalyzing, setIsAnalyzing] = useState(false);
+    const [name, setName] = useState("");
+    const [Email, setEmail] = useState("");
+    const [save, setSaveAnalysis] = useState()
+    const [isSaving, setIsSaving] = useState(false)
+    const { mutateAsync } = useModel()
+    const user = useCurrentUser()
+
+    const updateProfile = useUpdateProfileMutation();
+    const SaveAnlaysis = useSaveAnalysis()
+    const { data: UserSummary } = useGetAnalysis()
+    const DeleteUserAnalysis = useDeleteAnalysis()
+    const logout = useAuthStore((state) => state.logout)
+    const router = useRouter();
+
     const [analysis, setAnalysis] = useState<{
         summary: string;
         risks: RisksData;
@@ -53,27 +74,9 @@ const AnalyzerScreen = () => {
         };
         processing_time: number;
         language_detected?: string;
+        originalText: string
+        userId: string;
     } | null>(null);
-
-
-
-
-    // Account settings state
-    const [name, setName] = useState("");
-    const [Email, setEmail] = useState("");
-    const { mutateAsync } = useModel()
-    const updateProfile = useUpdateProfileMutation();
-    const { data: userData, isLoading, error } = useMe();
-    const { data: UserSummary } = useUserSummary()
-
-
-
-    useEffect(() => {
-        if (userData) {
-            setName(userData.name || "");
-            setEmail(userData.email || "");
-        }
-    }, [userData]);
 
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,37 +100,58 @@ const AnalyzerScreen = () => {
             return;
         }
 
+        if (!user) {
+            toast.error('You must be logged in to update your profile.');
+            return;
+        }
+
         const updateData = {
-            name: name.trim(),
-            email: Email.trim(),
+            userId: user.id,
+            data: {
+                name: name.trim(),
+                email: Email.trim(),
+            },
+
         };
+
         updateProfile.mutate(updateData);
     };
 
-    if (isLoading) {
-        return <UserSkeleton />;
-    }
-
-
-    if (error) {
-        return <ErrorMessage message={error.message} />
-    }
-
+    useEffect(() => {
+        if (analysis) {
+            console.log('analysis updated:', analysis);
+        }
+    }, [analysis])
 
 
     const handleAnalyze = async (e: React.FormEvent) => {
-        e.preventDefault()
+        e.preventDefault();
+
         if (!termsText.trim()) {
             toast.info("Please paste some terms and conditions to analyze");
             return;
         }
+        if (!user?.id) {
+            toast.error("You must be logged in to analyze terms");
+            return;
+        }
+
         try {
-            setIsAnalyzing(true)
+            setIsAnalyzing(true);
             const data = await mutateAsync({ text: termsText });
-            setAnalysis(data);
-            console.log('Analysis receobed', data)
+
+            const completeAnalysis = {
+                ...data,
+                originalText: termsText,
+                userId: user.id 
+            };
+
+            setAnalysis(completeAnalysis);
+            console.log('Complete analysis data:', completeAnalysis);
+
         } catch (err) {
             console.error("Analysis failed", err);
+            toast.error("Analysis failed. Please try again.");
         } finally {
             setIsAnalyzing(false);
         }
@@ -139,10 +163,33 @@ const AnalyzerScreen = () => {
     };
 
     const handleSave = () => {
-        toast.success("Your analysis has been saved successfully")
-    };
-    const handleLogOut = () => {
+        if (!analysis) {
+            toast.error("No analysis data to save");
+            return;
+        }
 
+        setIsSaving(true);
+
+        SaveAnlaysis.mutate(analysis, {
+            onSuccess: (data) => {
+                toast.success("Your analysis has been saved successfully");
+                setSaveAnalysis(data); 
+                setIsSaving(false);
+            },
+            onError: (err) => {
+                console.error(" Save Analysis failed", err);
+                toast.error("Failed to save analysis");
+                setIsSaving(false);
+            },
+        });
+    };
+
+    const handleDelete = (id:string) =>{
+        DeleteUserAnalysis.mutate(id)
+    }
+    const handleLogOut = () => {
+        logout()
+        router.push('/auth/login'); 
     }
     const getFlagSeverity = (flag: string): 'high' | 'medium' | 'low' => {
         const lowerFlag = flag.toLowerCase();
@@ -155,19 +202,14 @@ const AnalyzerScreen = () => {
     };
 
 
-    const getSeverityColor = (severity: string) => {
-        switch (severity) {
-            case 'high': return 'bg-red-100 text-red-800 border-red-200';
-            case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-            case 'low': return 'bg-blue-100 text-blue-800 border-blue-200';
-            default: return 'bg-gray-100 text-gray-800 border-gray-200';
-        }
-    };
-
-    const handleUpdateAccount = () => {
-        toast.success("Your account information has been updated successfully.")
-    };
-
+    // const getSeverityColor = (severity: string) => {
+    //     switch (severity) {
+    //         case 'high': return 'bg-red-100 text-red-800 border-red-200';
+    //         case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+    //         case 'low': return 'bg-blue-100 text-blue-800 border-blue-200';
+    //         default: return 'bg-gray-100 text-gray-800 border-gray-200';
+    //     }
+    // };
 
 
 
@@ -277,12 +319,7 @@ const AnalyzerScreen = () => {
                                                         <div className="flex-1 space-y-2">
                                                             <div className="flex items-center gap-2">
                                                                 <span className="text-sm text-gray-800">{flag}</span>
-                                                                <Badge
-                                                                    variant="outline"
-                                                                    className={`text-xs ${getSeverityColor(severity)}`}
-                                                                >
-                                                                    {severity}
-                                                                </Badge>
+                                                               
                                                             </div>
                                                         </div>
                                                     </div>
@@ -303,7 +340,7 @@ const AnalyzerScreen = () => {
                                     className="flex-1 border-gray-200 hover:bg-gray-50 h-10"
                                 >
                                     <Save className="w-4 h-4 mr-2" />
-                                    Save Analysis
+                                    {isSaving ? "Saving...." : "Save Analysis"}
                                 </Button>
                             </div>
                         </div>
@@ -333,48 +370,52 @@ const AnalyzerScreen = () => {
                                 </div>
                             ) : (
                                 <div>
-                                    <section>
-                                        {UserSummary?.map((summary: summaryTypes) => {
-                                            return (
-                                                <div key={summary.id} className="space-y-4 mb-6">
-                                                    <p className="text-sm text-gray-700">{summary?.summary}</p>
+                                        <section>
+                                            {UserSummary?.data?.map((summary: summaryTypes) => {
+                                                return (
+                                                    <div key={summary.id} className="space-y-4 mb-6 relative p-4 border border-gray-200 rounded-lg bg-white shadow-sm">
+                                                        
+                                                       
 
-                                                    {summary?.flags.length > 0 ? (
-                                                        summary?.flags.map((flag, index) => {
-                                                            const severity = getFlagSeverity(flag);
-                                                            return (
-                                                                <div
-                                                                    key={index}
-                                                                    className="p-3 bg-gray-50 rounded-lg border border-gray-100"
-                                                                >
-                                                                    <div className="flex items-start gap-3">
-                                                                        <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
-                                                                        <div className="flex-1 space-y-2">
-                                                                            <div className="flex items-center gap-2">
-                                                                                <span className="text-sm text-gray-800">{flag}</span>
-                                                                                <Badge
-                                                                                    variant="outline"
-                                                                                    className={`text-xs ${getSeverityColor(severity)}`}
+                                                        <p className="text-sm text-gray-700">{summary?.summary}</p>
+
+                                                        {summary?.flags.length > 0 ? (
+                                                            summary?.flags.map((flag, index) => {
+                                                               
+                                                                return (
+                                                                    <div
+                                                                        key={index}
+                                                                        className="p-3 bg-gray-50 rounded-lg border border-gray-100"
+                                                                    >
+                                                                        <div className="flex items-start gap-3">
+                                                                            <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                                                                            <div className="flex-1 space-y-2">
+                                                                                <div className="flex items-center gap-2">
+                                                                                    <span className="text-sm text-gray-800">{flag}</span>
+                                                                                   
+                                                                                </div>
+                                                                                <button
+                                                                                    onClick={() => handleDelete(summary.id)}
+                                                                                    className="absolute top-3 right-3 text-red-500 hover:text-red-700"
+                                                                                    aria-label="Delete Analysis"
                                                                                 >
-                                                                                    {severity}
-                                                                                </Badge>
+                                                                                    <Trash2 className="w-4 h-4" />
+                                                                                </button>
                                                                             </div>
                                                                         </div>
+
                                                                     </div>
-                                                                </div>
-                                                            );
-                                                        })
-                                                    ) : (
-                                                        <p className="text-sm text-gray-500 text-center py-4">
-                                                            No concerning phrases detected
-                                                        </p>
-                                                    )}
-                                                </div>
-                                            );
-                                        })}
-
-
-                                    </section>
+                                                                );
+                                                            })
+                                                        ) : (
+                                                            <p className="text-sm text-gray-500 text-center py-4">
+                                                                No concerning phrases detected
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                );
+                                            })}
+                                        </section>
                                 </div>
                             )}
                         </CardContent>
@@ -402,7 +443,7 @@ const AnalyzerScreen = () => {
                                         <Input
                                             id="account-name"
                                             type="text"
-                                            defaultValue={name}
+                                            defaultValue={user?.name}
                                             onChange={handleNameChange}
                                             className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
                                         />
@@ -413,14 +454,14 @@ const AnalyzerScreen = () => {
                                         <Input
                                             id="account-email"
                                             type="email"
-                                            defaultValue={Email}
+                                            defaultValue={user?.email}
                                             onChange={handleEmailChange}
                                             className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
                                         />
                                     </div>
 
                                     <Button
-                                        onClick={handleUpdateAccount}
+                                        
                                         className="bg-blue-600 hover:bg-blue-700 text-white"
                                     >
                                         Update Account

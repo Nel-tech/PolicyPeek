@@ -6,11 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, Lock } from "lucide-react";
-import { signIn, getSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { toast } from "sonner";
 import { Logo } from "@/components/logo";
 import Link from "next/link";
+import { useLogin } from "@/hooks/use-auth";
+import { validateEmailClient } from "@/components/validateEmailClient ";
 
 
 function LoginPage() {
@@ -21,7 +21,6 @@ function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
-    const router = useRouter();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData(prev => ({
@@ -30,32 +29,32 @@ function LoginPage() {
         }));
     };
 
+    const loginMutation = useLogin();
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
         setError('');
-
+        
         try {
-            const result = await signIn('credentials', {
+            if (formData.email.trim()) {
+                const validation = validateEmailClient(formData.email);
+                if (!validation.isValid) {
+                    toast.error(validation.message)
+                }
+            }
+        await loginMutation.mutateAsync({
                 email: formData.email,
                 password: formData.password,
-                redirect: false,
             });
-
-            if (result?.error) {
-                setError('Invalid email or password');
-                toast.error('incorrect email or password')
-            } else if (result?.ok) {
-                await getSession();
-                toast.success("Successfully LoggedIn! Welcome Back!");
-                router.push('/screen');
-            }
-        } catch (error) {
-            setError('An error occurred during sign in');
+        } catch (err: any) {
+            setError(err?.response?.data?.error || 'An error occurred during sign in');
         } finally {
             setIsLoading(false);
         }
     };
+
+
 
     return (
         <div className="p-6 min-h-[600px] flex flex-col justify-center">
@@ -137,7 +136,7 @@ function LoginPage() {
             </Card>
             <p className="mt-5 text-center text-sm/6 text-gray-500">
                 Don&#39;t have an account?{' '}
-                <Link href="/signup" className="font-semibold text-blue-600 hover:text-blue-700">
+                <Link href="/auth/signup" className="font-semibold text-blue-600 hover:text-blue-700">
                     Create one
                 </Link>
             </p>

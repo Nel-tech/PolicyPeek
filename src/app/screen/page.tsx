@@ -1,15 +1,10 @@
-// app/analyzer/page.tsx (Server Component)
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import AnalyzerScreen from "@/components/analyzer-screen/screen"; 
+'use client';
 
-export default async function AnalyzerPage() {
-    const session = await getServerSession(authOptions);
+import AnalyzerScreen from '@/components/analyzer-screen/screen';
 
-    if (!session) {
-        redirect("/auth/login");
-    }
+
+export default function AnalyzerPage() {
+   
 
     return <AnalyzerScreen />;
 }

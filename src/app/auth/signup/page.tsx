@@ -10,6 +10,8 @@ import axios from 'axios'
 import { toast } from "sonner";
 import { Logo } from "@/components/logo";
 import { useRouter } from "next/navigation";
+import { signup } from "@/lib/api";
+import { validateEmailClient } from "@/components/validateEmailClient ";
 
 
 const SignupPage = () => {
@@ -17,6 +19,7 @@ const SignupPage = () => {
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    // const [error, setError] = useState('');
 
     const router = useRouter()
 
@@ -25,23 +28,24 @@ const SignupPage = () => {
         setIsLoading(true);
 
         try {
-            const res = await axios.post(
-                '/api/auth/signup',
-                { email, password, name },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+            if (email.trim()) {
+                const validation = validateEmailClient(email);
+                if (!validation.isValid) {
+                    toast.error(validation.message);
                 }
-            );
-
-            console.log("data", res.data);
+            }
+            await signup({
+                name,
+                email,
+                password,
+            });
+            console.log("User created:");
             toast.success("Account created successfully! Welcome aboard!");
             router.push('/screen')
 
         } catch (err: any) {
             const message = err.response?.data?.message || "Something went wrong";
-            toast.error(message);
+            return message
         } finally {
             setIsLoading(false);
         }
