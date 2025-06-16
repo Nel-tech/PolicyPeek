@@ -54,16 +54,20 @@ export const useUpdateProfileMutation = () => {
 export const useHandleRequestToken = () => {
   return useMutation({
     mutationFn: handleRequest,
-    onSuccess: async () => {
-      toast.success("Reset token generated successfully.");
+    onSuccess: (data: any) => {
+      if (data.alreadyExists) {
+        toast.info(`Please wait ${data.waitTime} minute(s) before requesting another token.`);
+      } else {
+        toast.success("Reset token generated successfully.");
+      }
     },
     onError: (error: any) => {
       const errorMessage = error.response?.data?.error || "Failed to request reset token.";
       toast.error(errorMessage);
-      console.error("Request token error:", error);
     },
   });
 };
+
 
 export const useHandleResetPassword = () => {
   return useMutation({

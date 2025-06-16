@@ -50,7 +50,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     
     try {
       // Call backend logout to clear httpOnly cookie
-      await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/auth/api/logout`, {
+      await fetch(`${process.env.NEXT_PUBLIC_AUTH_API_URL}/auth/api/logout`, {
         method: 'POST',
         credentials: 'include'
       });
@@ -60,6 +60,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     
     // Clear accessible cookies
     Cookies.remove('user', { path: '/' });
+    Cookies.remove('token');
     Cookies.remove('isAuthenticated', { path: '/' });
     set({ user: null, isAuthenticated: false });
   },

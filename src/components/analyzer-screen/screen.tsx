@@ -377,7 +377,7 @@ const AnalyzerScreen = () => {
                                                         
                                                        
 
-                                                        <p className="text-sm text-gray-700">{summary?.summary}</p>
+                                                        <p className="text-sm text-gray-700 text-justify">{summary?.summary}</p>
 
                                                         {summary?.flags.length > 0 ? (
                                                             summary?.flags.map((flag, index) => {
@@ -394,14 +394,14 @@ const AnalyzerScreen = () => {
                                                                                     <span className="text-sm text-gray-800">{flag}</span>
                                                                                    
                                                                                 </div>
-                                                                                <button
+                                                                            </div>
+                                                                                {/* <button
                                                                                     onClick={() => handleDelete(summary.id)}
-                                                                                    className="absolute top-3 right-3 text-red-500 hover:text-red-700"
+                                                                                    className="absolute top-[40rem] right-3 text-red-500 hover:text-red-700"
                                                                                     aria-label="Delete Analysis"
                                                                                 >
                                                                                     <Trash2 className="w-4 h-4" />
-                                                                                </button>
-                                                                            </div>
+                                                                                </button> */}
                                                                         </div>
 
                                                                     </div>
