@@ -101,7 +101,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   checkAuthStatus: async () => {
     // Verify with backend that the httpOnly token is still valid
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/auth/verify-token`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_AUTH_API_URL}/api/auth/verify-token`, {
         method: 'GET',
         credentials: 'include' // Include httpOnly cookies
       });
