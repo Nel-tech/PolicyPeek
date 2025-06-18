@@ -100,10 +100,6 @@ return response.data
 }
 
 
-
-
-
-
 export async function AnalyzeText(text: TextSummaryRequest): Promise<AnalysisResponse> {
   try {
    
@@ -182,19 +178,24 @@ try {
 
 export const getUserAnalysis = async () => {
   try {
-    
     const response = await api.get('/model/get-user-analysis', {
       headers: {
         "Content-Type": "application/json",
-      },
-      withCredentials: true, 
-    })
-    return response.data
-  } catch (error) {
-    console.error(" Get User Analysis Error:", error);
-    throw error; 
+      }
+    });
+    return response.data;
+  } catch (error:any) {
+    if (error.response?.status === 401) {
+      // Create a custom error for unauthorized access
+      const authError = new Error('UNAUTHORIZED');
+      authError.cause = 401;
+      throw authError;
+    }
+    console.error('Get User Analysis Error:', error);
+    throw error;
   }
-}
+};
+
 
 export const DeleteUserAnalysis = async(id:string) => {
   try{

@@ -6,12 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, Lock, User } from "lucide-react";
-import axios from 'axios'
 import { toast } from "sonner";
 import { Logo } from "@/components/logo";
 import { useRouter } from "next/navigation";
 import { signup } from "@/lib/api";
 import { validateEmailClient } from "@/components/validateEmailClient ";
+import { useAuthStore } from "@/store/useAuthStore";
 
 
 const SignupPage = () => {
@@ -20,6 +20,7 @@ const SignupPage = () => {
     const [name, setName] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     // const [error, setError] = useState('');
+    const login = useAuthStore((state) => state.login)
 
     const router = useRouter()
 
@@ -28,29 +29,71 @@ const SignupPage = () => {
         setIsLoading(true);
 
         try {
+            // Validate email first
             if (email.trim()) {
                 const validation = validateEmailClient(email);
                 if (!validation.isValid) {
                     toast.error(validation.message);
+                    return; // ✅ Exit early if validation fails
                 }
             }
-            await signup({
+
+            const signupData = await signup({
                 name,
                 email,
                 password,
             });
-            console.log("User created:");
+
+            console.log("Signup response:", signupData);
+
+            const userData = {
+                id: signupData?.user?.id || signupData?.id,
+                name: signupData?.user?.name || signupData?.name || name,
+                email: signupData?.user?.email || signupData?.email || email
+            };
+
+            console.log("User data for login:", userData);
+
+            // Make sure we have required fields
+            if (!userData.id) {
+                throw new Error("User ID not found in signup response");
+            }
+
+            login(userData);
+
             toast.success("Account created successfully! Welcome aboard!");
-            router.push('/screen')
+            router.push('/screen');
 
         } catch (err: any) {
-            const message = err.response?.data?.message || "Something went wrong";
-            return message
+            console.error("Signup error:", err);
+
+            // Handle different error scenarios
+            let message = "Something went wrong";
+
+            if (err.response?.status === 409 || err.response?.status === 400) {
+               
+                const errorMessage = err.response?.data?.message || "";
+
+                if (errorMessage.toLowerCase().includes('email') &&
+                    (errorMessage.toLowerCase().includes('exist') ||
+                        errorMessage.toLowerCase().includes('taken') ||
+                        errorMessage.toLowerCase().includes('registered'))) {
+                    message = "An account with this email already exists. Please use a different email or try signing in.";
+                } else {
+                    message = errorMessage || "Invalid registration details";
+                }
+            } else if (err.response?.data?.message) {
+                message = err.response.data.message;
+            } else if (err.message) {
+                message = err.message;
+            }
+
+            toast.error(message);
+
         } finally {
             setIsLoading(false);
         }
     };
-
 
 
     return (

@@ -17,8 +17,8 @@ import { summaryTypes } from "@/types/types";
 // import UserSkeleton from "@/components/loader";
 // import ErrorMessage from "@/components/error"
 import { useCurrentUser } from "@/hooks/useCurrentUser";
- import { useAuthStore } from "@/store/useAuthStore";
- import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useRouter } from "next/navigation";
 import { Trash2 } from 'lucide-react';
 
 
@@ -52,8 +52,10 @@ const AnalyzerScreen = () => {
     const [save, setSaveAnalysis] = useState()
     const [isSaving, setIsSaving] = useState(false)
     const { mutateAsync } = useModel()
+
     const user = useCurrentUser()
 
+    console.log('currentuser', user)
     const updateProfile = useUpdateProfileMutation();
     const SaveAnlaysis = useSaveAnalysis()
     const { data: UserSummary } = useGetAnalysis()
@@ -143,7 +145,7 @@ const AnalyzerScreen = () => {
             const completeAnalysis = {
                 ...data,
                 originalText: termsText,
-                userId: user.id 
+                userId: user.id
             };
 
             setAnalysis(completeAnalysis);
@@ -173,7 +175,7 @@ const AnalyzerScreen = () => {
         SaveAnlaysis.mutate(analysis, {
             onSuccess: (data) => {
                 toast.success("Your analysis has been saved successfully");
-                setSaveAnalysis(data); 
+                setSaveAnalysis(data);
                 setIsSaving(false);
             },
             onError: (err) => {
@@ -184,12 +186,12 @@ const AnalyzerScreen = () => {
         });
     };
 
-    const handleDelete = (id:string) =>{
+    const handleDelete = (id: string) => {
         DeleteUserAnalysis.mutate(id)
     }
     const handleLogOut = () => {
         logout()
-        router.push('/auth/login'); 
+        router.push('/auth/login');
     }
     const getFlagSeverity = (flag: string): 'high' | 'medium' | 'low' => {
         const lowerFlag = flag.toLowerCase();
@@ -319,7 +321,7 @@ const AnalyzerScreen = () => {
                                                         <div className="flex-1 space-y-2">
                                                             <div className="flex items-center gap-2">
                                                                 <span className="text-sm text-gray-800">{flag}</span>
-                                                               
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -370,52 +372,52 @@ const AnalyzerScreen = () => {
                                 </div>
                             ) : (
                                 <div>
-                                        <section>
-                                            {UserSummary?.data?.map((summary: summaryTypes) => {
-                                                return (
-                                                    <div key={summary.id} className="space-y-4 mb-6 relative p-4 border border-gray-200 rounded-lg bg-white shadow-sm">
-                                                        
-                                                       
+                                    <section>
+                                        {UserSummary?.data?.map((summary: summaryTypes) => {
+                                            return (
+                                                <div key={summary.id} className="space-y-4 mb-6 relative p-4 border border-gray-200 rounded-lg bg-white shadow-sm">
 
-                                                        <p className="text-sm text-gray-700 text-justify">{summary?.summary}</p>
 
-                                                        {summary?.flags.length > 0 ? (
-                                                            summary?.flags.map((flag, index) => {
-                                                               
-                                                                return (
-                                                                    <div
-                                                                        key={index}
-                                                                        className="p-3 bg-gray-50 rounded-lg border border-gray-100"
-                                                                    >
-                                                                        <div className="flex items-start gap-3">
-                                                                            <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
-                                                                            <div className="flex-1 space-y-2">
-                                                                                <div className="flex items-center gap-2">
-                                                                                    <span className="text-sm text-gray-800">{flag}</span>
-                                                                                   
-                                                                                </div>
+
+                                                    <p className="text-sm text-gray-700 text-justify">{summary?.summary}</p>
+
+                                                    {summary?.flags.length > 0 ? (
+                                                        summary?.flags.map((flag, index) => {
+
+                                                            return (
+                                                                <div
+                                                                    key={index}
+                                                                    className="p-3 bg-gray-50 rounded-lg border border-gray-100"
+                                                                >
+                                                                    <div className="flex items-start gap-3">
+                                                                        <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                                                                        <div className="flex-1 space-y-2">
+                                                                            <div className="flex items-center gap-2">
+                                                                                <span className="text-sm text-gray-800">{flag}</span>
+
                                                                             </div>
-                                                                                {/* <button
+                                                                        </div>
+                                                                        {/* <button
                                                                                     onClick={() => handleDelete(summary.id)}
                                                                                     className="absolute top-[40rem] right-3 text-red-500 hover:text-red-700"
                                                                                     aria-label="Delete Analysis"
                                                                                 >
                                                                                     <Trash2 className="w-4 h-4" />
                                                                                 </button> */}
-                                                                        </div>
-
                                                                     </div>
-                                                                );
-                                                            })
-                                                        ) : (
-                                                            <p className="text-sm text-gray-500 text-center py-4">
-                                                                No concerning phrases detected
-                                                            </p>
-                                                        )}
-                                                    </div>
-                                                );
-                                            })}
-                                        </section>
+
+                                                                </div>
+                                                            );
+                                                        })
+                                                    ) : (
+                                                        <p className="text-sm text-gray-500 text-center py-4">
+                                                            No concerning phrases detected
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            );
+                                        })}
+                                    </section>
                                 </div>
                             )}
                         </CardContent>
@@ -461,7 +463,7 @@ const AnalyzerScreen = () => {
                                     </div>
 
                                     <Button
-                                        
+
                                         className="bg-blue-600 hover:bg-blue-700 text-white"
                                     >
                                         Update Account

@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import Cookies from 'js-cookie';
 
-
 interface User {
   id: string;
   name: string;
@@ -16,7 +15,14 @@ interface AuthState {
   initializeAuth: () => void;
   setUser: (user: User) => void;
   checkAuthStatus: () => void;
+  clearAuthState: () => void; 
 }
+
+const COOKIE_OPTIONS = {
+  expires: 7,
+  path: '/',
+  sameSite: 'lax' as const
+};
 
 export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
@@ -33,14 +39,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     };
     
     // Store user data in accessible cookie (token is httpOnly)
-    const cookieOptions = { 
-      expires: 7,
-      path: '/',
-      sameSite: 'lax' as const
-    };
-    
-    Cookies.set('user', JSON.stringify(cleanUser), cookieOptions);
-    Cookies.set('isAuthenticated', 'true', cookieOptions);
+    Cookies.set('user', JSON.stringify(cleanUser), COOKIE_OPTIONS);
+    Cookies.set('isAuthenticated', 'true', COOKIE_OPTIONS);
     
     set({ user: cleanUser, isAuthenticated: true });
   },
@@ -49,7 +49,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     console.log('🚪 Logout called');
     
     try {
-      // Call backend logout to clear httpOnly cookie
       await fetch(`${process.env.NEXT_PUBLIC_AUTH_API_URL}/auth/api/logout`, {
         method: 'POST',
         credentials: 'include'
@@ -58,10 +57,17 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       console.error('Logout API call failed:', error);
     }
     
-    // Clear accessible cookies
+    // Clear state and cookies
+    get().clearAuthState();
+  },
+
+  clearAuthState: () => {
+   
     Cookies.remove('user', { path: '/' });
-    Cookies.remove('token');
+    Cookies.remove('token', { path: '/' });
     Cookies.remove('isAuthenticated', { path: '/' });
+    
+    // Clear state
     set({ user: null, isAuthenticated: false });
   },
 
@@ -80,7 +86,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         set({ user, isAuthenticated: true });
       } catch (err) {
         console.error('❌ Failed to parse user cookie:', err);
-        get().logout();
+        get().clearAuthState();
       }
     } else {
       console.log('❌ No valid auth data found in cookies');
@@ -94,31 +100,45 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       name: user.name,
       email: user.email
     };
-    Cookies.set('user', JSON.stringify(cleanUser), { expires: 7, path: '/' });
+    
+    // Update cookie and state
+    Cookies.set('user', JSON.stringify(cleanUser), COOKIE_OPTIONS);
     set({ user: cleanUser });
   },
 
   checkAuthStatus: async () => {
-    // Verify with backend that the httpOnly token is still valid
+    console.log('🔍 Checking auth status...');
+    
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_AUTH_API_URL}/api/auth/verify-token`, {
         method: 'GET',
-        credentials: 'include' // Include httpOnly cookies
+        credentials: 'include'
       });
       
       if (!response.ok) {
-        console.log('🔒 Token verification failed');
-        get().logout();
+        console.log('🔒 Token verification failed, status:', response.status);
+        get().clearAuthState();
         return;
       }
       
       const data = await response.json();
+      
       if (data.user) {
-        get().login(data.user);
+        console.log('✅ Token valid, updating user data');
+        const cleanUser = {
+          id: data.user.id,
+          name: data.user.name,
+          email: data.user.email
+        };
+        
+        set({ user: cleanUser, isAuthenticated: true });
+      } else {
+        console.log('❌ No user data in verification response');
+        get().clearAuthState();
       }
     } catch (error) {
-      console.error('Auth status check failed:', error);
-      get().logout();
+      console.error('❌ Auth status check failed:', error);
+      get().clearAuthState();
     }
   },
 }));

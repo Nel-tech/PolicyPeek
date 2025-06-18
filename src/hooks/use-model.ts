@@ -49,31 +49,54 @@ export const useSaveAnalysis = () => {
 export const useGetAnalysis = () => {
   const user = useAuthStore((state) => state.user);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  console.log('user',user)
+  console.log('isAuthenticated', isAuthenticated)
   
   return useQuery({
     queryKey: ['user-summary', user?.id],
     queryFn: async () => {
-      if (!user?.id) {
-        throw new Error('User ID not available');
-      }
-      
       try {
         const result = await getUserAnalysis();
         return result || [];
       } catch (error) {
-        console.error('Failed to fetch user analysis:', error);
+        // Only log authentication errors if user should be authenticated
+        if (isAuthenticated && user?.id) {
+          console.error('Failed to fetch user analysis:', error);
+        }
         throw error;
       }
     },
-    enabled: isAuthenticated && !!user?.id,
+    
+    enabled: Boolean(isAuthenticated && user?.id),
     staleTime: 1000 * 60 * 5,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
     refetchInterval: false,
+    refetchOnMount: false,
     retry: (failureCount, error) => {
-      if (error.message.includes('User ID not available')) {
+      // Don't retry if user is not authenticated
+      if (!isAuthenticated || !user?.id) {
         return false;
       }
+      
+      if (error?.cause === 401 || error?.message === 'UNAUTHORIZED') {
+        return false;
+      }
+      
       return failureCount < 2;
+    },
+    // Suppress errors when user is not authenticated
+    throwOnError: (error) => {
+      // Don't throw errors if user is not authenticated
+      if (!isAuthenticated || !user?.id) {
+        return false;
+      }
+      
+      // Don't throw UNAUTHORIZED errors to console
+      if (error?.message === 'UNAUTHORIZED') {
+        return false;
+      }
+      
+      return true;
     },
   });
 };
