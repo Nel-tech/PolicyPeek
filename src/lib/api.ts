@@ -109,7 +109,7 @@ export async function AnalyzeText(text: TextSummaryRequest): Promise<AnalysisRes
       headers: {
         "Content-Type": "application/json"
       },
-      timeout: 30000, 
+      withCredentials:true
     });
 
     console.log('📝 Payload being received:', response.data);
@@ -186,7 +186,6 @@ export const getUserAnalysis = async () => {
     return response.data;
   } catch (error:any) {
     if (error.response?.status === 401) {
-      // Create a custom error for unauthorized access
       const authError = new Error('UNAUTHORIZED');
       authError.cause = 401;
       throw authError;
