@@ -109,7 +109,6 @@ export async function AnalyzeText(text: TextSummaryRequest): Promise<AnalysisRes
       headers: {
         "Content-Type": "application/json"
       },
-      withCredentials:true
     });
 
     console.log('📝 Payload being received:', response.data);
