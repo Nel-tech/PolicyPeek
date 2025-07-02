@@ -34,8 +34,6 @@ export const useUpdateProfileMutation = () => {
   return useMutation({
     mutationFn: updateUser,
     onSuccess: (data) => {
-      console.log("✅ Update success response:", data);
-
       if (data?.user) {
         setUser(data.user);
         toast.success("Profile updated successfully!");

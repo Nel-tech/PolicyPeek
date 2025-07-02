@@ -89,6 +89,11 @@ export const login = async (data: login) => {
   return response.data;
 };
 
+export const getMe = async() => {
+   const response = await api.get(`/api/user/get-me`);
+  return response.data;
+}
+
 export const updateUser = async ({ userId, data }: UpdateUserParams) => {
   const response = await api.put(`/api/auth/user/update/${userId}`, data)    
     return response.data;
@@ -104,14 +109,12 @@ export async function AnalyzeText(text: TextSummaryRequest): Promise<AnalysisRes
   try {
    
     
-    // Send the text string directly, not wrapped in another object
+   
     const response = await axios.post(`${NEXT_PUBLIC_MODEL_API_URL}/analyze`, text, {
       headers: {
         "Content-Type": "application/json"
       },
     });
-
-    console.log('📝 Payload being received:', response.data);
     return response.data;
     
   } catch (error: any) {
@@ -143,7 +146,6 @@ export async function AnalyzeText(text: TextSummaryRequest): Promise<AnalysisRes
 
 export async function SaveAnalysis(analysisData: AnalysisResponse) {
 try {
-    console.log('💾 Saving analysis to database...');
     
     const response = await api.post(`/model/analysis/save`, analysisData, {
       headers: {
@@ -151,8 +153,6 @@ try {
       },
       timeout: 10000,
     });
-
-    console.log('✅ Analysis saved successfully:', response.data);
     return response.data;
     
   } catch (error: any) {

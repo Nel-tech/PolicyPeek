@@ -11,7 +11,6 @@ export const useModel = () => useMutation<AnalysisResponse, Error, TextSummaryRe
 
   onSuccess: (data) => {
     toast.success('Analysis completed!');
-    console.log('✅ Mutation completed successfully:', data);
   },
 
   onError: (error: unknown) => {
@@ -49,8 +48,6 @@ export const useSaveAnalysis = () => {
 export const useGetAnalysis = () => {
   const user = useAuthStore((state) => state.user);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  console.log('user',user)
-  console.log('isAuthenticated', isAuthenticated)
   
   return useQuery({
     queryKey: ['user-summary', user?.id],
@@ -59,7 +56,6 @@ export const useGetAnalysis = () => {
         const result = await getUserAnalysis();
         return result || [];
       } catch (error) {
-        // Only log authentication errors if user should be authenticated
         if (isAuthenticated && user?.id) {
           console.error('Failed to fetch user analysis:', error);
         }

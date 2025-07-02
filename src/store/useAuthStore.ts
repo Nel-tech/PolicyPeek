@@ -1,5 +1,8 @@
 import { create } from 'zustand';
-import Cookies from 'js-cookie';
+import { persist } from 'zustand/middleware';
+import { getMe } from '@/lib/api';
+
+
 
 interface User {
   id: string;
@@ -10,135 +13,119 @@ interface User {
 interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
+  isLoading: boolean;
+  isInitialized: boolean;
+  sessionValidated: boolean; 
   login: (user: User) => void;
-  logout: () => void;
-  initializeAuth: () => void;
-  setUser: (user: User) => void;
-  checkAuthStatus: () => void;
-  clearAuthState: () => void; 
+  logout: () => Promise<void>;
+  initializeAuth: () => Promise<void>;
+  clearAuth: () => void;
 }
 
-const COOKIE_OPTIONS = {
-  expires: 7,
-  path: '/',
-  sameSite: 'lax' as const
+const logError = (message: string, error?: any) => {
+  if (process.env.NODE_ENV === 'development') {
+    console.error(message, error);
+  } else {
+    console.warn('Authentication process encountered an issue');
+  }
 };
 
-export const useAuthStore = create<AuthState>((set, get) => ({
-  user: null,
-  isAuthenticated: false,
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set, get) => ({
+      user: null,
+      isAuthenticated: false,
+      isLoading: false,
+      isInitialized: false,
+      sessionValidated: false,
 
-  login: (user) => {
-    console.log('🔐 Login called with user:', user);
-    
-    // Clean user data (remove sensitive fields)
-    const cleanUser = {
-      id: user.id,
-      name: user.name,
-      email: user.email
-    };
-    
-    // Store user data in accessible cookie (token is httpOnly)
-    Cookies.set('user', JSON.stringify(cleanUser), COOKIE_OPTIONS);
-    Cookies.set('isAuthenticated', 'true', COOKIE_OPTIONS);
-    
-    set({ user: cleanUser, isAuthenticated: true });
-  },
+      logout: async () => {
+        set({ isLoading: true });
 
-  logout: async () => {
-    console.log('🚪 Logout called');
-    
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_AUTH_API_URL}/auth/api/logout`, {
-        method: 'POST',
-        credentials: 'include'
-      });
-    } catch (error) {
-      console.error('Logout API call failed:', error);
-    }
-    
-    // Clear state and cookies
-    get().clearAuthState();
-  },
+        try {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/logout`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
 
-  clearAuthState: () => {
-   
-    Cookies.remove('user', { path: '/' });
-    Cookies.remove('token', { path: '/' });
-    Cookies.remove('isAuthenticated', { path: '/' });
-    
-    // Clear state
-    set({ user: null, isAuthenticated: false });
-  },
+          if (!response.ok) {
+            throw new Error(`Logout failed: ${response.status}`);
+          }
+        } catch (error) {
+          logError('Logout API call failed', error);
+        }
 
-  initializeAuth: () => {
-    console.log('🔍 Initializing auth...');
-    const userCookie = Cookies.get('user');
-    const isAuthCookie = Cookies.get('isAuthenticated');
-    
-    console.log('🍪 User from cookie:', userCookie ? 'Present' : 'Missing');
-    console.log('🍪 Auth status from cookie:', isAuthCookie);
+        get().clearAuth();
+        set({ isLoading: false });
+      },
 
-    if (userCookie && isAuthCookie === 'true') {
-      try {
-        const user = JSON.parse(userCookie);
-        console.log('✅ Restoring auth state from cookies');
-        set({ user, isAuthenticated: true });
-      } catch (err) {
-        console.error('❌ Failed to parse user cookie:', err);
-        get().clearAuthState();
-      }
-    } else {
-      console.log('❌ No valid auth data found in cookies');
-      set({ user: null, isAuthenticated: false });
-    }
-  },
-
-  setUser: (user) => {
-    const cleanUser = {
-      id: user.id,
-      name: user.name,
-      email: user.email
-    };
-    
-    // Update cookie and state
-    Cookies.set('user', JSON.stringify(cleanUser), COOKIE_OPTIONS);
-    set({ user: cleanUser });
-  },
-
-  checkAuthStatus: async () => {
-    console.log('🔍 Checking auth status...');
-    
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_AUTH_API_URL}/api/auth/verify-token`, {
-        method: 'GET',
-        credentials: 'include'
-      });
-      
-      if (!response.ok) {
-        console.log('🔒 Token verification failed, status:', response.status);
-        get().clearAuthState();
-        return;
-      }
-      
-      const data = await response.json();
-      
-      if (data.user) {
-        console.log('✅ Token valid, updating user data');
-        const cleanUser = {
-          id: data.user.id,
-          name: data.user.name,
-          email: data.user.email
-        };
+      initializeAuth: async () => {
+        const state = get();
         
-        set({ user: cleanUser, isAuthenticated: true });
-      } else {
-        console.log('❌ No user data in verification response');
-        get().clearAuthState();
-      }
-    } catch (error) {
-      console.error('❌ Auth status check failed:', error);
-      get().clearAuthState();
+        if (state.isInitialized) {
+          return;
+        }
+
+        set({ isLoading: true });
+
+        try {
+        
+          const response = await getMe();
+          
+          if (response && response.data && response.data.user) {
+           
+            set({
+              user: response.data.user,
+              isAuthenticated: true,
+              isInitialized: true,
+              sessionValidated: true,
+              isLoading: false,
+            });
+          } else {
+            throw new Error("Invalid session response");
+          }
+        } catch (error) {
+          logError('Auth initialization failed', error);
+          
+          
+          set({
+            user: null,
+            isAuthenticated: false,
+            isInitialized: true,
+            sessionValidated: false,
+            isLoading: false,
+          });
+        }
+      },
+
+      login: (user) => {
+        set({
+          user: user,
+          isAuthenticated: true,
+          isInitialized: true,
+          sessionValidated: true, // Mark as validated since we just logged in
+        });
+      },
+
+      clearAuth: () => {
+        set({
+          user: null,
+          isAuthenticated: false,
+          isInitialized: true,
+          sessionValidated: false,
+          isLoading: false,
+        });
+      },
+    }),
+    {
+      name: 'auth-storage',
+      partialize: (state) => ({
+        user: state.user,
+      }),
     }
-  },
-}));
+  )
+);
+
