@@ -8,24 +8,24 @@ export default function TermsOfService() {
             <section className="mb-6">
                 <h2 className="text-xl font-semibold mb-2">1. Introduction</h2>
                 <p>
-                    Welcome to <strong>PeekPolicy</strong>. By accessing or using our web application, you agree to be bound by these Terms of Service. If you do not agree with any part of the terms, please do not use the application.
+                    Welcome to <strong>PolicyPeek</strong>. By accessing or using our web application, you agree to be bound by these Terms of Service. If you do not agree with any part of the terms, please do not use the application.
                 </p>
             </section>
 
             <section className="mb-6">
                 <h2 className="text-xl font-semibold mb-2">2. Service Description</h2>
                 <p>
-                    PeekPolicy is a tool that allows users to paste and analyze Terms & Conditions and Privacy Policies. It provides summaries and flags potentially sensitive words or phrases to help users make more informed decisions before accepting any policy or agreement.
+                    PolicyPeek is a tool that allows users to paste and analyze Terms & Conditions and Privacy Policies. It provides summaries and flags potentially sensitive words or phrases to help users make more informed decisions before accepting any policy or agreement.
                 </p>
                 <p className="mt-2 italic text-sm">
-                    <strong>Note:</strong> PeekPolicy is an informational tool and not a substitute for legal advice.
+                    <strong>Note:</strong> PolicyPeek is an informational tool and not a substitute for legal advice.
                 </p>
             </section>
 
             <section className="mb-6">
                 <h2 className="text-xl font-semibold mb-2">3. Acceptable Use</h2>
                 <ul className="list-disc list-inside space-y-1">
-                    <li>You agree not to use PeekPolicy for any unlawful or abusive purpose.</li>
+                    <li>You agree not to use PolicyPeek for any unlawful or abusive purpose.</li>
                     <li>Do not attempt to reverse-engineer, hack, or disrupt the platform.</li>
                     <li>You are responsible for the text and content you submit.</li>
                 </ul>
@@ -34,14 +34,14 @@ export default function TermsOfService() {
             <section className="mb-6">
                 <h2 className="text-xl font-semibold mb-2">4. No Legal Advice</h2>
                 <p>
-                    The information provided by PeekPolicy is for informational purposes only. It does not constitute legal advice or create an attorney-client relationship. Always consult a qualified legal professional for advice on specific legal matters.
+                    The information provided by PolicyPeek is for informational purposes only. It does not constitute legal advice or create an attorney-client relationship. Always consult a qualified legal professional for advice on specific legal matters.
                 </p>
             </section>
 
             <section className="mb-6">
                 <h2 className="text-xl font-semibold mb-2">5. Termination</h2>
                 <p>
-                    We reserve the right to suspend or terminate access to PeekPolicy at our discretion, especially in cases of abuse, misuse, or breach of these Terms.
+                    We reserve the right to suspend or terminate access to PolicyPeek at our discretion, especially in cases of abuse, misuse, or breach of these Terms.
                 </p>
             </section>
 

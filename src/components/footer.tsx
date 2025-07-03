@@ -8,7 +8,7 @@ const Footer = () => {
             <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
 
                 <div className="text-center md:text-left">
-                    <p>&copy; {new Date().getFullYear()} PeekPolicy. All rights reserved.</p>
+                    <p>&copy; {new Date().getFullYear()} PolicyPeek. All rights reserved.</p>
                 </div>
 
                 <div className="flex gap-4">
