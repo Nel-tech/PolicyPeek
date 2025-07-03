@@ -14,6 +14,7 @@ import { validateEmailClient } from "@/components/validateEmailClient ";
 import { useAuthStore } from "@/store/useAuthStore";
 import Link from "next/link";
 import GoogleLoginButton from "@/components/GoogleButton";
+import Footer from "@/components/footer";
 
 
 const SignupPage = () => {
@@ -58,7 +59,7 @@ const SignupPage = () => {
             login(userData);
 
             toast.success("Account created successfully! Welcome aboard!");
-            router.push('/screen');
+            router.push('/analyze');
 
         } catch (err: any) {
             console.error("Signup error:", err);
@@ -92,108 +93,115 @@ const SignupPage = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-6 bg-gray-50">
-            <div className="w-full max-w-md">
-                {/* Logo */}
-                <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center mb-4">
-                        <Logo size="lg" />
-                    </div>
-                </div>
+        <>
 
-                <Card className="border-0 shadow-lg">
-                    <CardHeader className="text-center pb-4">
-                        <CardTitle className="text-xl">
-                            Create Account
-                        </CardTitle>
-                        <CardDescription>
-                            Sign up to start analyzing terms and conditions
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <form onSubmit={handleSignup} className="space-y-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
-                                <div className="relative">
-                                    <User className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                                    <Input
-                                        id="name"
-                                        type="text"
-                                        placeholder="Enter your full name"
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                        className="pl-10 h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
-                                        required
-                                        disabled={isLoading}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="space-y-2">
-                                <Label htmlFor="email" className="text-sm font-medium">Email</Label>
-                                <div className="relative">
-                                    <Mail className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                                    <Input
-                                        id="email"
-                                        type="email"
-                                        placeholder="Enter your email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        className="pl-10 h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
-                                        required
-                                        disabled={isLoading}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="space-y-2">
-                                <Label htmlFor="password" className="text-sm font-medium">Password</Label>
-                                <div className="relative">
-                                    <Lock className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                                    <Input
-                                        id="password"
-                                        type="password"
-                                        placeholder="Enter your password"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        className="pl-10 h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
-                                        required
-                                        disabled={isLoading}
-                                    />
-                                </div>
-                            </div>
-
-                            <Button
-                                type="submit"
-                                className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                                disabled={isLoading}
-                            >
-                                {isLoading ? 'Creating Account...' : 'Create Account'}
-                            </Button>
-                        </form>
-
-                        <div className="relative my-6">
-                            <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t border-gray-300" />
-                            </div>
-                            <div className="relative flex justify-center text-sm text-gray-500 bg-white px-2">
-                                or continue with
-                            </div>
+            <div className="min-h-screen flex items-center justify-center p-6 bg-gray-50">
+                <div className="w-full max-w-md">
+                    {/* Logo */}
+                    <div className="text-center mb-8">
+                        <div className="inline-flex items-center justify-center mb-4">
+                            <Logo size="lg" />
                         </div>
+                    </div>
 
-                        {/* Google Login Button */}
-                        <GoogleLoginButton text="Sign up with Google" />
-                    </CardContent>
-                <p className="mt-6 text-center text-sm text-gray-500">
-                    Already have an account?{' '}
-                    <Link href="/auth/login" className="font-semibold text-blue-600 hover:text-blue-700">
-                        Sign in
-                    </Link>
-                </p>
-                </Card>
+                    <Card className="border-0 shadow-lg">
+                        <CardHeader className="text-center pb-4">
+                            <CardTitle className="text-xl">
+                                Create Account
+                            </CardTitle>
+                            <CardDescription>
+                                Sign up to start analyzing terms and conditions
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <form onSubmit={handleSignup} className="space-y-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
+                                    <div className="relative">
+                                        <User className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                                        <Input
+                                            id="name"
+                                            type="text"
+                                            placeholder="Enter your full name"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            className="pl-10 h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                                            required
+                                            disabled={isLoading}
+                                        />
+                                    </div>
+                                </div>
 
+                                <div className="space-y-2">
+                                    <Label htmlFor="email" className="text-sm font-medium">Email</Label>
+                                    <div className="relative">
+                                        <Mail className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                                        <Input
+                                            id="email"
+                                            type="email"
+                                            placeholder="Enter your email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            className="pl-10 h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                                            required
+                                            disabled={isLoading}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="password" className="text-sm font-medium">Password</Label>
+                                    <div className="relative">
+                                        <Lock className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                                        <Input
+                                            id="password"
+                                            type="password"
+                                            placeholder="Enter your password"
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            className="pl-10 h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                                            required
+                                            disabled={isLoading}
+                                        />
+                                    </div>
+                                </div>
+
+                                <Button
+                                    type="submit"
+                                    className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                                    disabled={isLoading}
+                                >
+                                    {isLoading ? 'Creating Account...' : 'Create Account'}
+                                </Button>
+                            </form>
+
+                            <div className="relative my-6">
+                                <div className="absolute inset-0 flex items-center">
+                                    <div className="w-full border-t border-gray-300" />
+                                </div>
+                                <div className="relative flex justify-center text-sm text-gray-500 bg-white px-2">
+                                    or continue with
+                                </div>
+                            </div>
+
+                            {/* Google Login Button */}
+                            <GoogleLoginButton text="Sign up with Google" />
+                        </CardContent>
+                        <p className="mt-6 text-center text-sm text-gray-500">
+                            Already have an account?{' '}
+                            <Link href="/auth/login" className="font-semibold text-blue-600 hover:text-blue-700">
+                                Sign in
+                            </Link>
+                        </p>
+                    </Card>
+
+                </div>
             </div>
-        </div>
+
+            <footer>
+                <Footer />
+            </footer>
+        </>
     );
 };
 

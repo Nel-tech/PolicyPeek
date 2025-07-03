@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://peekpolicy.vercel.app
+
+# Sitemaps
+Sitemap: https://peekpolicy.vercel.app/sitemap.xml

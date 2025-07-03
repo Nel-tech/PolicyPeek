@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Copy, Loader2, CheckCircle } from "lucide-react"
 import { toast } from "sonner"
+import Footer from "@/components/footer"
 
 function RequestResetForm() {
   const [email, setEmail] = useState('')
@@ -49,6 +50,9 @@ function RequestResetForm() {
   const tokenValue = mutation.data?.token || mutation.data?.Token?.token
 
   return (
+
+    <>
+    
     <div className="max-w-md mx-auto">
       <form onSubmit={handleSubmit} className="space-y-4 p-6 bg-white rounded-lg border shadow-sm">
         <div>
@@ -170,6 +174,11 @@ function RequestResetForm() {
         )}
       </form>
     </div>
+
+    <footer>
+      <Footer/>
+    </footer>
+    </>
   )
 }
 

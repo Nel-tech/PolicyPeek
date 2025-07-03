@@ -1,11 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/logo";
 import Link from "next/link";
-
+import Footer from "../footer";
 
 
 export const CoverPage = () => {
     return (
+
+        <>
         <div className="p-8 min-h-[600px] flex flex-col justify-center items-center text-center bg-gradient-to-br from-slate-50 to-blue-50/30">
             {/* Logo */}
             <div className="mb-8">
@@ -47,5 +49,10 @@ export const CoverPage = () => {
 
             </div>
         </div>
+        
+        <footer>
+            <Footer/>
+        </footer>
+        </>
     );
 };

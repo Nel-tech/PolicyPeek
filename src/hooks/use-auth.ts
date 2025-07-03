@@ -18,7 +18,7 @@ export const useLogin = () => {
       loginToStore(data.user);
 
       toast.success("User successfully logged in.");
-      router.push('/screen');
+      router.push('/analyze');
     },
     onError: (error: any) => {
       const errorMessage = error.response?.data?.error || "Failed to login.";
@@ -29,13 +29,13 @@ export const useLogin = () => {
 };
 
 export const useUpdateProfileMutation = () => {
-  const setUser = useAuthStore((state) => state.setUser);
+  const login = useAuthStore((state) => state.login);
 
   return useMutation({
     mutationFn: updateUser,
     onSuccess: (data) => {
       if (data?.user) {
-        setUser(data.user);
+        login(data.user);
         toast.success("Profile updated successfully!");
       } else {
         toast.error("User data missing in response.");

@@ -18,7 +18,8 @@ import { summaryTypes } from "@/types/types";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
-import { Trash2 } from 'lucide-react';
+import Footer from "../footer";
+
 
 
 interface RiskInfo {
@@ -203,6 +204,9 @@ const AnalyzerScreen = () => {
 
 
     return (
+
+        <>
+        
         <div className="min-h-screen flex items-center justify-center p-6 bg-gray-50">
             <div className="w-full max-w-4xl">
                 <div className="space-y-6 max-h-[80vh] overflow-y-auto">
@@ -468,6 +472,11 @@ const AnalyzerScreen = () => {
                 </div>
             </div>
         </div>
+
+        <footer>
+            <Footer/>
+        </footer>
+        </>
     );
 };
 

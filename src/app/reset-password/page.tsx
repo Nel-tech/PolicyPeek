@@ -2,6 +2,7 @@
 import React, { useState } from "react"
 import { useHandleResetPassword } from "@/hooks/use-auth"
 import { useRouter } from "next/navigation"
+import Footer from "@/components/footer"
 
 function ResetPasswordForm() {
     const [newPassword, setNewPassword] = useState('')
@@ -23,6 +24,8 @@ function ResetPasswordForm() {
     }
 
     return (
+        <>
+        
         <div>
             <form onSubmit={handleSubmit} className="space-y-4 p-4">
                 <h2 className="text-lg font-medium">Reset Your Password</h2>
@@ -51,6 +54,10 @@ function ResetPasswordForm() {
                 </button>
             </form>
         </div>
+            <footer>
+                <Footer />
+            </footer>
+        </>
     )
 }
 

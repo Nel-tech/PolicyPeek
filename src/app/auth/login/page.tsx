@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useLogin } from "@/hooks/use-auth";
 import { validateEmailClient } from "@/components/validateEmailClient ";
 import GoogleLoginButton from "@/components/GoogleButton";
+import Footer from "@/components/footer";
 
 
 function LoginPage() {
@@ -57,6 +58,8 @@ function LoginPage() {
     };
 
     return (
+
+        <>
         <div className="min-h-screen flex items-center justify-center p-6 bg-gray-50">
             <div className="w-full max-w-md">
                 {/* Logo */}
@@ -154,6 +157,11 @@ function LoginPage() {
 
             </div>
         </div>
+        
+        <footer>
+            <Footer/>
+        </footer>
+        </>
     )
 
 }
