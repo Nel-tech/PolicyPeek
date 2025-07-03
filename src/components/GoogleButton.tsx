@@ -7,7 +7,7 @@ interface GoogleProps {
 
 export default function GoogleLoginButton({text}: GoogleProps) {
     const handleGoogleLogin = () => {
-        window.location.href = `${process.env.NEXT_PUBLIC_GOOGLE_AUTH}/api/auth/google`
+        window.location.href = `${process.env.NEXT_PUBLIC_AUTH_API_URL}/api/auth/google`
     }
 
     return (

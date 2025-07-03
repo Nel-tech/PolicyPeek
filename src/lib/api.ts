@@ -114,6 +114,7 @@ export async function AnalyzeText(text: TextSummaryRequest): Promise<AnalysisRes
       headers: {
         "Content-Type": "application/json"
       },
+      withCredentials:true
     });
     return response.data;
     
@@ -151,6 +152,7 @@ try {
       headers: {
         "Content-Type": "application/json",
       },
+      withCredentials:true,
       timeout: 10000,
     });
     return response.data;
@@ -180,7 +182,8 @@ export const getUserAnalysis = async () => {
     const response = await api.get('/model/get-user-analysis', {
       headers: {
         "Content-Type": "application/json",
-      }
+      },
+      withCredentials:true
     });
     return response.data;
   } catch (error:any) {

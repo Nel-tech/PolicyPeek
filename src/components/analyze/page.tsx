@@ -242,15 +242,16 @@ const AnalyzerScreen = () => {
                                 <CardHeader className="pb-3">
                                     <CardTitle className="text-lg flex items-center gap-2">
                                         <FileText className="w-5 h-5 text-blue-600" />
-                                        Input Terms
+                                            Policy Text
                                     </CardTitle>
                                     <CardDescription>
-                                        Paste the terms and conditions you want to analyze below
+                                            Paste the policy document you want to analyze below
+
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent className="space-y-4">
                                     <Textarea
-                                        placeholder="Paste your terms and conditions here..."
+                                            placeholder="Paste your Terms & Conditions or Privacy Policy here..."
                                         value={termsText}
                                         onChange={(e) => setTermsText(e.target.value)}
                                         className="min-h-[120px] resize-none border-gray-200 focus:border-blue-500 focus:ring-blue-500"
