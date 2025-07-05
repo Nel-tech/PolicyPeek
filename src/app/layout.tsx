@@ -1,19 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Roboto } from 'next/font/google'
 import { Toaster } from 'sonner'
 import "./globals.css";
 import Providers from "@/app/provider";
 import { Analytics } from "@vercel/analytics/next"
+import { ThemeProvider } from 'next-themes'
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+})
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const roboto = Roboto({
+  subsets: ['latin'],
+  weight: ['400', '700'], // adjust as needed
+  variable: '--font-roboto',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: "PolicyPeek",
@@ -21,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_NG',
-    url: 'https://peekpolicy.vercel.app',
+    url: 'https://policypeek.vercel.app/',
     siteName: 'PolicyPeek',
   },
   verification: {
@@ -36,16 +40,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
         <head>
           <meta name="google-site-verification" content="mr6DpKGyOAKnB0eQH0DQByStxObAfiiRoG9BWEtTkAs" />
         </head>
+      <body
+        className={`${inter.variable} ${roboto.variable}`}
+      >
+
         <Providers>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Analytics />
           <Toaster richColors />
           {children}
+          </ThemeProvider>
         </Providers>
       </body>
     </html>

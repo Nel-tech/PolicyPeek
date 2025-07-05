@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://peekpolicy.vercel.app
+Host: https://policypeek.vercel.app
 
 # Sitemaps
-Sitemap: https://peekpolicy.vercel.app/sitemap.xml
+Sitemap: https://policypeek.vercel.app/sitemap.xml

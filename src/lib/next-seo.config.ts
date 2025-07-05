@@ -6,7 +6,7 @@ const SEO = {
   openGraph: {
     type: 'website',
     locale: 'en_NG',
-    url: 'https://peekpolicy.vercel.app',
+    url: 'https://policypeek.vercel.app/',
     siteName: 'PolicyPeek',
   },
 };

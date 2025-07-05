@@ -1,0 +1,22 @@
+import React from 'react'
+import Nav from '../Nav'
+import Features from './Features'
+import HeroSection from './HeroSection'
+import Works from './Works'
+import Bigbg from './Bigbg'
+import Footer from '../footer'
+
+function Home() {
+  return (
+    <div>
+      <Nav />
+      <HeroSection />
+      <Features />
+      <Works />
+      <Bigbg/>
+      <Footer/>
+    </div>
+  )
+}
+
+export default Home

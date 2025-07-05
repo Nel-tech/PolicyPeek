@@ -65,7 +65,9 @@ function LoginPage() {
                 {/* Logo */}
                 <div className="text-center mb-8">
                     <div className="inline-flex items-center justify-center mb-4">
-                        <Logo size="lg" />
+                            <Link href='/'>
+                                <Logo size="lg" />
+                            </Link>
                     </div>
                 </div>
 

@@ -36,7 +36,7 @@ const SignupPage = () => {
                 const validation = validateEmailClient(email);
                 if (!validation.isValid) {
                     toast.error(validation.message);
-                    return; // ✅ Exit early if validation fails
+                    return; 
                 }
             }
 
@@ -100,7 +100,9 @@ const SignupPage = () => {
                     {/* Logo */}
                     <div className="text-center mb-8">
                         <div className="inline-flex items-center justify-center mb-4">
+                            <Link href='/'>   
                             <Logo size="lg" />
+                            </Link>
                         </div>
                     </div>
 
