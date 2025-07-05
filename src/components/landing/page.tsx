@@ -9,7 +9,13 @@ import Footer from '../footer'
 function Home() {
   return (
     <div>
-      <Nav />
+      <Nav
+        logo="/images/logo.png"
+        loginText="Sign In"
+        signupText="Sign Up"
+        authText="Analyze"
+      />
+
       <HeroSection />
       <Features />
       <Works />

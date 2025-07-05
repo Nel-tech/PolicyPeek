@@ -13,14 +13,14 @@ const MotionDiv = dynamic(
 
 function Bigbg() {
   return (
-    <section className="relative py-32 px-4 bg-white">
+    <section className="relative py-32 px-4 bg-white dark:bg-[#0f0f0f]">
       {/* Centered Dark Card with visible pattern */}
       <MotionDiv
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7 }}
-        className="relative z-10 max-w-5xl mx-auto bg-neutral-900 border border-gray-800 shadow-xl rounded-3xl px-8 py-32 text-center overflow-hidden"
+        className="relative z-10 max-w-5xl mx-auto bg-neutral-900 dark:bg-neutral-900 border border-gray-800 dark:border-zinc-700 shadow-xl rounded-3xl px-8 py-32 text-center overflow-hidden"
       >
         {/* Pattern inside the dark card */}
         <div className="absolute inset-0 opacity-20 pointer-events-none">
@@ -36,19 +36,17 @@ function Bigbg() {
 
         {/* Main Content */}
         <div className="relative z-10">
-          <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">
+          <h2 className=" font-sans text-3xl md:text-5xl font-bold mb-6 text-white">
             Try PolicyPeek
           </h2>
-          <p className="text-lg md:text-xl mb-8 text-gray-300 max-w-2xl mx-auto">
+          <p className=" font-sans text-lg md:text-xl mb-8 text-gray-300 max-w-2xl mx-auto">
             Instantly simplify Terms and Conditions with AI-powered summaries and risk analysis — no legalese, just clarity.
           </p>
 
-          
-          <Link href='/auth/signup'>
-          
-          <Button className="bg-blue-500 text-white hover:bg-blue-600 cursor-pointer px-8 py-6 rounded-sm text-base font-semibold transition">
-            Get Started Now
-          </Button>
+          <Link href="/auth/signup">
+            <Button className=" cursor-pointer bg-blue-500 hover:bg-blue-600 font-sans text-white  dark:bg-blue-600 dark:hover:bg-blue-700 px-8 py-6 rounded-sm text-base font-semibold transition">
+              Get Started Now
+            </Button>
           </Link>
         </div>
       </MotionDiv>

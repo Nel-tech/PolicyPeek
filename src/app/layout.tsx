@@ -1,23 +1,19 @@
 import type { Metadata } from "next";
-import { Inter, Roboto } from 'next/font/google'
+import { Open_Sans } from 'next/font/google'
 import { Toaster } from 'sonner'
 import "./globals.css";
 import Providers from "@/app/provider";
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from 'next-themes'
 
-const inter = Inter({
+const OpenSans = Open_Sans({
   subsets: ['latin'],
-  variable: '--font-inter',
+  weight: ['400', '700'],
+  variable: '--font-Open_Sans', 
   display: 'swap',
 })
 
-const roboto = Roboto({
-  subsets: ['latin'],
-  weight: ['400', '700'], // adjust as needed
-  variable: '--font-roboto',
-  display: 'swap',
-})
+
 
 export const metadata: Metadata = {
   title: "PolicyPeek",
@@ -44,7 +40,7 @@ export default function RootLayout({
           <meta name="google-site-verification" content="mr6DpKGyOAKnB0eQH0DQByStxObAfiiRoG9BWEtTkAs" />
         </head>
       <body
-        className={`${inter.variable} ${roboto.variable}`}
+        className={`${OpenSans.variable} font-OpenSans`}
       >
 
         <Providers>

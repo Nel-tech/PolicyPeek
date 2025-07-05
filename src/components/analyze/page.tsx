@@ -20,6 +20,7 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 import Footer from "../footer";
+import Nav from "../Nav";
 
 
 
@@ -207,8 +208,11 @@ const AnalyzerScreen = () => {
     return (
 
         <>
+            <header>
+                <Nav logo="/images/Logo.png" authText="" signupText="" loginText="" />
+            </header>
 
-            <div className="min-h-screen flex items-center justify-center p-6 bg-gray-50">
+            <div className="min-h-screen flex items-center justify-center p-6 bg-gray-50 dark:bg-gray-950 transition-colors">
                 <div className="w-full max-w-4xl">
                     <div className="space-y-6 max-h-[80vh] overflow-y-auto">
                         {/* Header */}
@@ -218,21 +222,21 @@ const AnalyzerScreen = () => {
                                     <Logo size="lg" />
                                 </Link>
                             </div>
-                            <p className="text-sm text-gray-500">Summarize and analyze terms instantly</p>
+                            <p className="text-lg font-sans text-gray-500  dark:text-gray-400">Summarize and analyze terms instantly</p>
                         </div>
 
                         {/* Tabs */}
                         <Tabs defaultValue="new-analysis" className="space-y-4">
                             <TabsList className="grid w-full grid-cols-3">
-                                <TabsTrigger value="new-analysis" className="flex items-center gap-2">
-                                    <FileText className="w-4 h-4" />
+                                <TabsTrigger value="new-analysis" className="flex items-center gap-2 font-sans">
+                                    <FileText className="w-4 h-4 " />
                                     New Analysis
                                 </TabsTrigger>
-                                <TabsTrigger value="saved" className="flex items-center gap-2">
+                                <TabsTrigger value="saved" className="flex items-center gap-2 font-sans">
                                     <FolderOpen className="w-4 h-4" />
                                     My Saved
                                 </TabsTrigger>
-                                <TabsTrigger value="settings" className="flex items-center gap-2">
+                                <TabsTrigger value="settings" className="flex items-center gap-2 font-sans">
                                     <Settings className="w-4 h-4" />
                                     Settings
                                 </TabsTrigger>
@@ -241,15 +245,14 @@ const AnalyzerScreen = () => {
                             {/* New Analysis Tab */}
                             <TabsContent value="new-analysis" className="space-y-4">
                                 {/* Input Section */}
-                                <Card className="border border-gray-200 shadow-sm">
+                                <Card className="border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-900">
                                     <CardHeader className="pb-3">
-                                        <CardTitle className="text-lg flex items-center gap-2">
+                                        <CardTitle className="text-lg flex font-sans items-center gap-2 text-gray-800 dark:text-gray-100">
                                             <FileText className="w-5 h-5 text-blue-600" />
                                             Policy Text
                                         </CardTitle>
-                                        <CardDescription>
+                                        <CardDescription className=" font-sans text-gray-600 dark:text-gray-400">
                                             Paste the policy document you want to analyze below
-
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-4">
@@ -257,20 +260,20 @@ const AnalyzerScreen = () => {
                                             placeholder="Paste your Terms & Conditions or Privacy Policy here..."
                                             value={termsText}
                                             onChange={(e) => setTermsText(e.target.value)}
-                                            className="min-h-[120px] resize-none border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                                            className="font-sans min-h-[120px] resize-none border-gray-200 dark:border-gray-700 focus:border-blue-500 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                                         />
                                         <div className="flex gap-2">
                                             <Button
                                                 onClick={handleAnalyze}
                                                 disabled={isAnalyzing}
-                                                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white h-10 cursor-pointer"
+                                                className="font-sans flex-1 bg-blue-600 hover:bg-blue-700 text-white h-10 cursor-pointer"
                                             >
                                                 {isAnalyzing ? "Analyzing..." : "Analyze Terms"}
                                             </Button>
                                             <Button
                                                 onClick={handleClear}
                                                 variant="outline"
-                                                className="px-4 h-10 border-gray-200 hover:bg-gray-50"
+                                                className="font-sans px-4 h-10 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"
                                             >
                                                 <RotateCcw className="w-4 h-4" />
                                             </Button>
@@ -282,48 +285,45 @@ const AnalyzerScreen = () => {
                                 {analysis && (
                                     <div className="space-y-4">
                                         {/* Summary */}
-                                        <Card className="border border-gray-200 shadow-sm">
+                                        <Card className="border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-900">
                                             <CardHeader className="pb-3">
-                                                <CardTitle className="text-lg flex items-center gap-2">
-                                                    <CheckCircle className="w-5 h-5 text-green-600" />
+                                                <CardTitle className="text-lg flex items-center gap-2 text-gray-800 dark:text-gray-100">
+                                                    <CheckCircle className="font-sans w-5 h-5 text-green-600" />
                                                     Summary
                                                 </CardTitle>
                                             </CardHeader>
                                             <CardContent>
-                                                <p className="text-sm text-gray-700 leading-relaxed">{analysis.summary}</p>
+                                                <p className="font-sans text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{analysis.summary}</p>
                                             </CardContent>
                                         </Card>
 
                                         {/* Sensitive Phrases */}
-                                        <Card className="border border-gray-200 shadow-sm">
+                                        <Card className="border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-900">
                                             <CardHeader className="pb-3">
-                                                <CardTitle className="text-lg flex items-center gap-2">
+                                                <CardTitle className="text-lg font-sans flex items-center gap-2 text-gray-800 dark:text-gray-100">
                                                     <AlertTriangle className="w-5 h-5 text-amber-600" />
                                                     Risk Flags
                                                 </CardTitle>
-                                                <CardDescription>
+                                                <CardDescription className="text-gray-600 font-sans dark:text-gray-400">
                                                     Detected {analysis?.flags?.length || 0} potential concerns
                                                 </CardDescription>
                                             </CardHeader>
                                             <CardContent className="space-y-3">
                                                 {analysis?.flags?.length > 0 ? (
-                                                    analysis.flags.map((flag, index) => {
-                                                        const severity = getFlagSeverity(flag);
-                                                        return (
-                                                            <div key={index} className="p-3 bg-gray-50 rounded-lg border border-gray-100">
-                                                                <div className="flex items-start gap-3">
-                                                                    <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
-                                                                    <div className="flex-1 space-y-2">
-                                                                        <div className="flex items-center gap-2">
-                                                                            <span className="text-sm text-gray-800">{flag}</span>
-                                                                        </div>
+                                                    analysis.flags.map((flag, index) => (
+                                                        <div key={index} className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700">
+                                                            <div className="flex items-start gap-3">
+                                                                <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                                                                <div className="flex-1 space-y-2">
+                                                                    <div className="flex items-center gap-2">
+                                                                        <span className="text-sm text-gray-800 dark:text-gray-200 font-sans">{flag}</span>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        );
-                                                    })
+                                                        </div>
+                                                    ))
                                                 ) : (
-                                                    <p className="text-sm text-gray-500 text-center py-4">No concerning phrases detected</p>
+                                                        <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4 font-sans">No concerning phrases detected</p>
                                                 )}
                                             </CardContent>
                                         </Card>
@@ -333,9 +333,9 @@ const AnalyzerScreen = () => {
                                             <Button
                                                 onClick={handleSave}
                                                 variant="outline"
-                                                className="flex-1 border-gray-200 hover:bg-gray-50 h-10"
+                                                className="flex-1 border-gray-200 dark:border-gray-700 font-sans hover:bg-gray-50 dark:hover:bg-gray-800 h-10"
                                             >
-                                                <Save className="w-4 h-4 mr-2" />
+                                                <Save className="w-4 h-4 mr-2 font-sans" />
                                                 {isSaving ? "Saving...." : "Save Analysis"}
                                             </Button>
                                         </div>
@@ -345,13 +345,13 @@ const AnalyzerScreen = () => {
 
                             {/* Saved Analyses Tab */}
                             <TabsContent value="saved">
-                                <Card className="border border-gray-200 shadow-sm bg-white">
+                                <Card className="border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-900">
                                     <CardHeader>
-                                        <CardTitle className="flex items-center gap-2 text-gray-800">
+                                        <CardTitle className="flex font-sans items-center gap-2 text-gray-800 dark:text-gray-100">
                                             <FolderOpen className="w-5 h-5 text-blue-600" />
                                             My Saved Analyses
                                         </CardTitle>
-                                        <CardDescription className="text-gray-600">
+                                        <CardDescription className="text-gray-600 dark:text-gray-400 font-sans">
                                             View and manage your previously saved analyses
                                         </CardDescription>
                                     </CardHeader>
@@ -359,43 +359,42 @@ const AnalyzerScreen = () => {
                                         {UserSummary?.length === 0 ? (
                                             <div className="text-center py-8">
                                                 <FolderOpen className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                                                <p className="text-gray-500">No saved analyses yet</p>
-                                                <p className="text-sm text-gray-400">Your saved analyses will appear here</p>
+                                                <p className="text-gray-500 dark:text-gray-400 font-sans">No saved analyses yet</p>
+                                                <p className="text-sm text-gray-400 dark:text-gray-500 font-sans">Your saved analyses will appear here</p>
                                             </div>
                                         ) : (
                                             <div>
                                                 <section>
-                                                    {UserSummary?.data?.map((summary: summaryTypes) => {
-                                                        return (
-                                                            <div key={summary.id} className="space-y-4 mb-6 relative p-4 border border-gray-200 rounded-lg bg-white shadow-sm">
-                                                                <p className="text-sm text-gray-700 text-justify">{summary?.summary}</p>
+                                                    {UserSummary?.data?.map((summary: summaryTypes) => (
+                                                        <div
+                                                            key={summary.id}
+                                                            className="space-y-4 mb-6 relative p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 shadow-sm"
+                                                        >
+                                                            <p className="text-sm text-gray-700 dark:text-gray-200 text-justify font-sans">{summary?.summary}</p>
 
-                                                                {summary?.flags.length > 0 ? (
-                                                                    summary?.flags.map((flag, index) => {
-                                                                        return (
-                                                                            <div
-                                                                                key={index}
-                                                                                className="p-3 bg-gray-50 rounded-lg border border-gray-100"
-                                                                            >
-                                                                                <div className="flex items-start gap-3">
-                                                                                    <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
-                                                                                    <div className="flex-1 space-y-2">
-                                                                                        <div className="flex items-center gap-2">
-                                                                                            <span className="text-sm text-gray-800">{flag}</span>
-                                                                                        </div>
-                                                                                    </div>
+                                                            {summary?.flags.length > 0 ? (
+                                                                summary?.flags.map((flag, index) => (
+                                                                    <div
+                                                                        key={index}
+                                                                        className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-100 dark:border-gray-600"
+                                                                    >
+                                                                        <div className="flex items-start gap-3">
+                                                                            <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                                                                            <div className="flex-1 space-y-2">
+                                                                                <div className="flex items-center gap-2">
+                                                                                    <span className="text-sm text-gray-800 dark:text-gray-100 font-sans">{flag}</span>
                                                                                 </div>
                                                                             </div>
-                                                                        );
-                                                                    })
-                                                                ) : (
-                                                                    <p className="text-sm text-gray-500 text-center py-4">
-                                                                        No concerning phrases detected
-                                                                    </p>
-                                                                )}
-                                                            </div>
-                                                        );
-                                                    })}
+                                                                        </div>
+                                                                    </div>
+                                                                ))
+                                                            ) : (
+                                                                <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4 font-sans">
+                                                                    No concerning phrases detected
+                                                                </p>
+                                                            )}
+                                                        </div>
+                                                    ))}
                                                 </section>
                                             </div>
                                         )}
@@ -403,45 +402,50 @@ const AnalyzerScreen = () => {
                                 </Card>
                             </TabsContent>
 
+
                             {/* Settings Tab */}
                             <TabsContent value="settings">
                                 <div className="space-y-6">
                                     {/* Account Information */}
                                     <form onSubmit={handleUpdateProfile}>
-                                        <Card className="border border-gray-200 shadow-sm bg-white">
+                                        <Card className="border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-900">
                                             <CardHeader>
-                                                <CardTitle className="flex items-center gap-2 text-gray-800">
+                                                <CardTitle className="flex items-center gap-2 text-gray-800 dark:text-gray-100 font-sans">
                                                     <User className="w-5 h-5 text-blue-600" />
                                                     Account Information
                                                 </CardTitle>
-                                                <CardDescription className="text-gray-600">
+                                                <CardDescription className="text-gray-600 dark:text-gray-400 font-sans">
                                                     Update your personal information
                                                 </CardDescription>
                                             </CardHeader>
                                             <CardContent className="space-y-4">
                                                 <div className="space-y-2">
-                                                    <Label htmlFor="account-name" className="text-sm font-medium text-gray-700">Full Name</Label>
+                                                    <Label htmlFor="account-name" className="text-sm font-sans font-medium text-gray-700 dark:text-gray-300">
+                                                        Full Name
+                                                    </Label>
                                                     <Input
                                                         id="account-name"
                                                         type="text"
                                                         defaultValue={user?.name}
                                                         onChange={handleNameChange}
-                                                        className="border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                                                        className="border-gray-200 font-sans dark:border-gray-700 focus:border-blue-500 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                                                     />
                                                 </div>
 
                                                 <div className="space-y-2">
-                                                    <Label htmlFor="account-email" className="text-sm font-medium text-gray-700">Email Address</Label>
+                                                    <Label htmlFor="account-email" className="font-sans text-sm font-medium text-gray-700 dark:text-gray-300">
+                                                        Email Address
+                                                    </Label>
                                                     <Input
                                                         id="account-email"
                                                         type="email"
                                                         defaultValue={user?.email}
                                                         onChange={handleEmailChange}
-                                                        className="border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                                                        className="border-gray-200 font-sans dark:border-gray-700 focus:border-blue-500 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                                                     />
                                                 </div>
 
-                                                <Button className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer">
+                                                <Button className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer font-sans">
                                                     Update Account
                                                 </Button>
                                             </CardContent>
@@ -449,13 +453,13 @@ const AnalyzerScreen = () => {
                                     </form>
 
                                     {/* Logout */}
-                                    <Card className="border border-gray-200 shadow-sm bg-white">
+                                    <Card className="border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-900">
                                         <CardHeader>
-                                            <CardTitle className="flex items-center gap-2 text-gray-800">
+                                            <CardTitle className="flex items-center gap-2 text-gray-800 dark:text-gray-100 font-sans">
                                                 <LogOut className="w-5 h-5 text-red-600" />
                                                 Account Actions
                                             </CardTitle>
-                                            <CardDescription className="text-gray-600">
+                                            <CardDescription className="text-gray-600 dark:text-gray-400 font-sans">
                                                 Sign out of your account
                                             </CardDescription>
                                         </CardHeader>
@@ -463,7 +467,7 @@ const AnalyzerScreen = () => {
                                             <Button
                                                 onClick={handleLogOut}
                                                 variant="outline"
-                                                className="w-full border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300"
+                                                className="w-full font-sans border-red-200 dark:border-red-500 text-red-600 hover:bg-red-50 dark:hover:bg-red-900 hover:border-red-300"
                                             >
                                                 <LogOut className="w-4 h-4 mr-2" />
                                                 Logout
@@ -472,6 +476,7 @@ const AnalyzerScreen = () => {
                                     </Card>
                                 </div>
                             </TabsContent>
+
                         </Tabs>
                     </div>
                 </div>

@@ -15,6 +15,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import Link from "next/link";
 import GoogleLoginButton from "@/components/GoogleButton";
 import Footer from "@/components/footer";
+import Nav from "@/components/Nav";
 
 
 const SignupPage = () => {
@@ -94,29 +95,33 @@ const SignupPage = () => {
 
     return (
         <>
-
-            <div className="min-h-screen flex items-center justify-center p-6 bg-gray-50">
+            <header>
+                <Nav logo="/images/Logo.png" authText="" signupText="" loginText="" />
+            </header>
+            <div className="min-h-screen mt-[4rem] flex items-center justify-center p-6 bg-gray-50 dark:bg-gray-950 transition-colors">
                 <div className="w-full max-w-md">
                     {/* Logo */}
                     <div className="text-center mb-8">
                         <div className="inline-flex items-center justify-center mb-4">
-                            <Link href='/'>   
-                            <Logo size="lg" />
+                            <Link href='/'>
+                                <Logo size="lg" />
                             </Link>
                         </div>
                     </div>
 
-                    <Card className="border-0 shadow-lg">
+                    <Card className="border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg dark:shadow-md transition-colors">
                         <CardHeader className="text-center pb-4">
-                            <CardTitle className="text-xl">
+                            <CardTitle className="text-xl text-gray-900 dark:text-white">
                                 Create Account
                             </CardTitle>
-                            <CardDescription>
+                            <CardDescription className="text-gray-600 dark:text-gray-400">
                                 Sign up to start analyzing terms and conditions
                             </CardDescription>
                         </CardHeader>
+
                         <CardContent>
                             <form onSubmit={handleSignup} className="space-y-4">
+                                {/* Name Input */}
                                 <div className="space-y-2">
                                     <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
                                     <div className="relative">
@@ -127,13 +132,14 @@ const SignupPage = () => {
                                             placeholder="Enter your full name"
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
-                                            className="pl-10 h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                                            className="pl-10 h-11 border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:border-blue-500 focus:ring-blue-500"
                                             required
                                             disabled={isLoading}
                                         />
                                     </div>
                                 </div>
 
+                                {/* Email Input */}
                                 <div className="space-y-2">
                                     <Label htmlFor="email" className="text-sm font-medium">Email</Label>
                                     <div className="relative">
@@ -144,13 +150,14 @@ const SignupPage = () => {
                                             placeholder="Enter your email"
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
-                                            className="pl-10 h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                                            className="pl-10 h-11 border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:border-blue-500 focus:ring-blue-500"
                                             required
                                             disabled={isLoading}
                                         />
                                     </div>
                                 </div>
 
+                                {/* Password Input */}
                                 <div className="space-y-2">
                                     <Label htmlFor="password" className="text-sm font-medium">Password</Label>
                                     <div className="relative">
@@ -161,7 +168,7 @@ const SignupPage = () => {
                                             placeholder="Enter your password"
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
-                                            className="pl-10 h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                                            className="pl-10 h-11 border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:border-blue-500 focus:ring-blue-500"
                                             required
                                             disabled={isLoading}
                                         />
@@ -170,18 +177,19 @@ const SignupPage = () => {
 
                                 <Button
                                     type="submit"
-                                    className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                     disabled={isLoading}
                                 >
                                     {isLoading ? 'Creating Account...' : 'Create Account'}
                                 </Button>
                             </form>
 
+                            {/* Divider */}
                             <div className="relative my-6">
                                 <div className="absolute inset-0 flex items-center">
-                                    <div className="w-full border-t border-gray-300" />
+                                    <div className="w-full border-t border-gray-300 dark:border-gray-700" />
                                 </div>
-                                <div className="relative flex justify-center text-sm text-gray-500 bg-white px-2">
+                                <div className="relative flex justify-center text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-900 px-2">
                                     or continue with
                                 </div>
                             </div>
@@ -189,16 +197,18 @@ const SignupPage = () => {
                             {/* Google Login Button */}
                             <GoogleLoginButton text="Sign up with Google" />
                         </CardContent>
-                        <p className="mt-6 text-center text-sm text-gray-500">
+
+                        {/* Login Link */}
+                        <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
                             Already have an account?{' '}
-                            <Link href="/auth/login" className="font-semibold text-blue-600 hover:text-blue-700">
+                            <Link href="/auth/login" className="font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
                                 Sign in
                             </Link>
                         </p>
                     </Card>
-
                 </div>
             </div>
+
 
             <footer>
                 <Footer />

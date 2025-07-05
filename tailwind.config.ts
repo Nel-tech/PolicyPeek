@@ -19,9 +19,9 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-        inter: ['var(--font-inter)', 'sans-serif'],
-        roboto: ['var(--font-roboto)', 'sans-serif'],
-      },
+				OpenSans: ['var(--font-Open_Sans)', 'sans-serif'],
+				sans: ['var(--font-Open_Sans)', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',

@@ -3,3 +3,11 @@ export interface summaryTypes {
     summary:string;
     flags:string[];
 }
+
+export interface NavTypes {
+  logo: string;
+  loginText?: string;
+  signupText?: string;
+  authText?: string;
+}
+
