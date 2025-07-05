@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Moon, SunDim } from "lucide-react";
 import { NavTypes } from '@/types/types';
-
 import Image from 'next/image';
 import { useAuthStore } from '@/store/useAuthStore';
 

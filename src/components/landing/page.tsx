@@ -10,7 +10,7 @@ function Home() {
   return (
     <div>
       <Nav
-        logo="/images/logo.png"
+        logo="/images/Logo.png"
         loginText="Sign In"
         signupText="Sign Up"
         authText="Analyze"
