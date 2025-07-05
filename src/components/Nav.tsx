@@ -1,17 +1,14 @@
 'use client'
 
 import { useState, useEffect } from 'react';
-import Logo from '../../public/images/Logo.png';
 import Link from 'next/link';
-import { Dialog } from '@headlessui/react';
 import { Button } from "@/components/ui/button";
-import { Menu, X, Moon } from "lucide-react";
-import { motion, AnimatePresence } from 'framer-motion';
+import { Moon } from "lucide-react";
+
 import Image from 'next/image';
 import { useAuthStore } from '@/store/useAuthStore';
 
 function Nav() {
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [hasMounted, setHasMounted] = useState(false);
     const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
@@ -27,7 +24,7 @@ function Nav() {
             {/* Navbar */}
             <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md bg-white/60 border-b border-gray-200 px-6 lg:px-[7rem] py-2 flex items-center justify-between">
                 <Link href="/">
-                    <Image src={Logo} alt="logo" width={35} height={35} />
+                    <Image src='/images/Logo.png' alt="logo" width={35} height={35} />
                 </Link>
 
                 {/* Mobile Menu Button */}
