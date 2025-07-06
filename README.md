@@ -13,7 +13,7 @@ AI: Hugging Face Transformers, Text Summarization
 
 Deployment: Vercel (Frontend), Render (Backend)
 
-🎯 Features
+🎯 Features:
 Paste or upload Terms and Conditions or Privacy Policy
 
 Summarized output with risks and data usage flagged
