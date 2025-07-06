@@ -1,34 +1,34 @@
-🛡️ PolicyPeek – AI Terms & Conditions Analyzer
-Summarizes and flags privacy risks in legal documents using NLP and custom-built AI, helping users understand Terms and Conditions in seconds.
+# 🛡️ PolicyPeek – AI Terms & Conditions Analyzer
 
-🚀 Live Demo
-👉 policypeek.vercel.app
+**Summarizes and flags privacy risks in legal documents using NLP and custom-built AI, helping users understand Terms and Conditions in seconds.**
 
-⚙️ Tech Stack
-Frontend: Next.js, Tailwind CSS
+---
 
-Backend: FastAPI (Python), PostgreSQL,Prisma
 
-AI: Hugging Face Transformers, Text Summarization
+## ⚙️ Tech Stack
 
-Deployment: Vercel (Frontend), Render (Backend)
+- **Frontend:** Next.js, Tailwind CSS  
+- **Backend:** FastAPI (Python), PostgreSQL, Prisma  
+- **AI/NLP:** Hugging Face Transformers, Custom Text Summarization  
+- **Deployment:** Vercel (Frontend), Render (Backend)
 
-🎯 Features:
-Paste or upload Terms and Conditions or Privacy Policy
+---
 
-Summarized output with risks and data usage flagged
+## 🎯 Features
 
-Section-based chunking and NLP-driven highlights
+- 📄 Paste or upload Terms and Conditions / Privacy Policies  
+- ✂️ Section-based chunking and NLP-driven highlights  
+- 🧠 AI-powered summarization of key legal content  
+- ⚠️ Flags risky clauses and sensitive data usage  
+- 📱 Responsive and mobile-friendly interface  
+- 🔍 SEO-optimized for accessibility and discoverability
 
-Mobile-friendly, clean UI
+---
 
-SEO-optimized for accessibility and reach
+## 🧠 What I Learned
 
-🧠 What I Learned
-Integrating Python FastAPI with a Next.js frontend
+- 🔗 Integrating Python FastAPI with a Next.js frontend  
+- 🧪 Building NLP pipelines 
+- 📚 Chunking and processing large legal texts  
+- ♿ Implementing accessible and SEO-friendly layouts for complex content
 
-Basic NLP summarization using Hugging Face pipelines
-
-Handling large text inputs with chunking + formatting
-
-SEO and accessibility for content-heavy pages
