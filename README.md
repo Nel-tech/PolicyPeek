@@ -32,3 +32,6 @@
 - 📚 Chunking and processing large legal texts  
 - ♿ Implementing accessible and SEO-friendly layouts for complex content
 
+## License
+
+This project is licensed under the [Apache License 2.0](LICENSE).
