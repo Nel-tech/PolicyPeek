@@ -32,11 +32,23 @@ export default function HeroSection() {
                     transition={{ duration: 0.7 }}
                     className="md:text-center"
                 >
-                    <h1 className="text-3xl font-sans  font-extrabold tracking-tight leading-tight mb-4 text-gray-900 dark:text-white md:text-5xl">
+                    <h1 className="text-3xl font-sans font-extrabold tracking-tight leading-tight mb-4 text-gray-900 dark:text-white md:text-5xl">
                         Understand Terms & Conditions in Seconds
                     </h1>
 
-                    <p className="text-lg  md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mb-8 md:mx-auto">
+                    {/* ✅ Temporary privacy link for Google verification */}
+                    <div className="text-sm text-blue-700 dark:text-blue-400 mb-4">
+                        <a
+                            href="https://policypeek.vercel.app/privacy-policy"
+                            className="underline"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            View our Privacy Policy
+                        </a>
+                    </div>
+
+                    <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mb-8 md:mx-auto">
                         Let AI summarize privacy policies and hidden clauses so you never have to read long legal documents again.
                     </p>
 

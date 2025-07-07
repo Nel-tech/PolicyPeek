@@ -1,4 +1,6 @@
 "use client";
+import Footer from "@/components/footer"
+import Nav from "@/components/Nav"
 
 export default function TermsOfService() {
     return (
