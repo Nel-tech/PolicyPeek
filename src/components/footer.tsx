@@ -11,23 +11,21 @@ const Footer = () => {
                 </div>
 
                 <div className="flex gap-4">
-                    <a
-                        href="https://policypeek.vercel.app/privacy-policy"
+                    <Link
+                        href="/privacy-policy"
                         className="hover:underline hover:text-gray-900 dark:hover:text-white footer-sans"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        
                     >
                         Privacy Policy
-                    </a>
+                    </Link>
 
-                    <a
-                        href="https://policypeek.vercel.app/terms-of-service"
+                    <Link
+                        href="/terms-of-service"
                         className="hover:underline hover:text-gray-900 dark:hover:text-white footer-sans"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                       
                     >
                         Terms of Service
-                    </a>
+                    </Link>
 
                 </div>
             </div>
