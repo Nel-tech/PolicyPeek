@@ -26,12 +26,7 @@ export default function HeroSection() {
 
             {/* Main content */}
             <div className="relative z-10 max-w-4xl mx-auto px-6 py-24 mt-[4rem] text-center">
-                <MotionDiv
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7 }}
-                    className="md:text-center"
-                >
+                
                     <h1 className="text-3xl font-sans font-extrabold tracking-tight leading-tight mb-4 text-gray-900 dark:text-white md:text-5xl">
                         Understand Terms & Conditions in Seconds
                     </h1>
@@ -49,7 +44,7 @@ export default function HeroSection() {
                             </Button>
                         </Link>
                     </div>
-                </MotionDiv>
+               
             </div>
         </section>
     );

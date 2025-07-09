@@ -5,21 +5,13 @@ import dynamic from 'next/dynamic';
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
 
-// Dynamically load only motion.div
-const MotionDiv = dynamic(
-  () => import('framer-motion').then((mod) => mod.motion.div),
-  { ssr: false }
-);
+
 
 function Bigbg() {
   return (
     <section className="relative py-32 px-4 bg-white dark:bg-[#0f0f0f]">
-      {/* Centered Dark Card with visible pattern */}
-      <MotionDiv
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7 }}
+     
+      <div
         className="relative z-10 max-w-5xl mx-auto bg-neutral-900 dark:bg-neutral-900 border border-gray-800 dark:border-zinc-700 shadow-xl rounded-3xl px-8 py-32 text-center overflow-hidden"
       >
         {/* Pattern inside the dark card */}
@@ -49,7 +41,7 @@ function Bigbg() {
             </Button>
           </Link>
         </div>
-      </MotionDiv>
+      </div>
     </section>
   );
 }
