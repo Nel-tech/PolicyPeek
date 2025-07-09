@@ -2,8 +2,5 @@
 User-agent: *
 Allow: /
 
-# Host
-Host: https://policypeek.vercel.app
-
 # Sitemaps
 Sitemap: https://policypeek.vercel.app/sitemap.xml
