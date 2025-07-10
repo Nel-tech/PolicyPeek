@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AlertTriangle, FileText, Save, RotateCcw, CheckCircle, FolderOpen, Settings, LogOut, User } from "lucide-react";
+import { AlertTriangle, FileText, Save, RotateCcw, CheckCircle, FolderOpen, Settings, LogOut, User, DeleteIcon } from "lucide-react";
 import { useModel, useGetAnalysis, useSaveAnalysis } from "@/hooks/use-model";
 import { toast } from "sonner";
 import { Logo } from "@/components/logo";
@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation";
 import Footer from "../footer";
 import Nav from "../Nav";
 import Loader from "../Loader";
+import { DeleteAccount } from "@/lib/api";
 
 
 
@@ -192,7 +193,18 @@ const AnalyzerScreen = () => {
         logout()
         router.push('/auth/login');
     }
-   
+
+    const handleDeleteAccount = async () => {
+        try {
+            await DeleteAccount();
+            toast.success('Account Successfully Deleted')
+            router.push('/auth/signup');
+        } catch (error) {
+            console.error("Failed to delete account:", error);
+            toast.error('Failed to Delete Account')
+        }
+    };
+
 
 
 
@@ -465,6 +477,17 @@ const AnalyzerScreen = () => {
                                             >
                                                 <LogOut className="w-4 h-4 mr-2" />
                                                 Logout
+                                            </Button>
+                                        </CardContent>
+
+                                        <CardContent>
+                                            <Button
+                                                onClick={handleDeleteAccount}
+                                                variant="outline"
+                                                className="w-full font-sans border-red-200 dark:border-red-500 text-red-600 hover:bg-red-50 dark:hover:bg-red-900 hover:border-red-300"
+                                            >
+                                                <DeleteIcon className="w-4 h-4 mr-2" />
+                                                Delete Account
                                             </Button>
                                         </CardContent>
                                     </Card>

@@ -241,4 +241,21 @@ export const handlePasswordReset = async (userData: ResetPasswordRequest) => {
   }
 };
 
+export const DeleteAccount= async()=> {
+  try {
+    const response = await axios.delete(`${NEXT_PUBLIC_AUTH_API_URL}/api/user/delete-account`,{
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials:true
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error resetting user password:", error);
+    throw error;
+  }
+
+}
+
+
 
