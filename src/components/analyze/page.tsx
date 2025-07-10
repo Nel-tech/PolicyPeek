@@ -21,7 +21,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 import Footer from "../footer";
 import Nav from "../Nav";
-import Loader from "../Loader";
+import Loader from "../loader";
 import { DeleteAccount } from "@/lib/api";
 
 
