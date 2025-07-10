@@ -12,11 +12,11 @@ export const Breadcrumbs = ({ currentScreen, onLogout }: BreadcrumbsProps) => {
     <div className="bg-white/80 backdrop-blur-sm border-b border-slate-200 px-4 py-3 flex items-center justify-between">
       <div className="flex items-center space-x-2 text-sm">
         <Logo size="sm" variant="icon-only" />
-        <span className="font-medium text-slate-700">PolicyPeek</span>
+        <span className="font-medium text-slate-700 font-sans">PolicyPeek</span>
         {currentScreen === 'analyzer' && (
           <>
             <ChevronRight className="w-4 h-4 text-slate-400" />
-            <span className="text-slate-500">Dashboard</span>
+            <span className="text-slate-500 font-sans">Dashboard</span>
           </>
         )}
       </div>
@@ -25,7 +25,7 @@ export const Breadcrumbs = ({ currentScreen, onLogout }: BreadcrumbsProps) => {
         onClick={onLogout}
         variant="ghost"
         size="sm"
-        className="text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors p-1"
+        className=" font-sans text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors p-1"
       >
         <LogOut className="w-4 h-4" />
       </Button>

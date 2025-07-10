@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import dynamic from 'next/dynamic';
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
 
@@ -28,7 +27,7 @@ function Bigbg() {
 
         {/* Main Content */}
         <div className="relative z-10">
-          <h2 className=" font-sans text-3xl md:text-5xl font-bold mb-6 text-white">
+          <h2 className=" font-montserrat text-3xl md:text-5xl font-bold mb-6 text-white">
             Try PolicyPeek
           </h2>
           <p className=" font-sans text-lg md:text-xl mb-8 text-gray-300 max-w-2xl mx-auto">

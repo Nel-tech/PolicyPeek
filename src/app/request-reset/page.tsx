@@ -60,8 +60,8 @@ function RequestResetForm() {
       <div className="max-w-md mx-auto">
         <form onSubmit={handleSubmit} className="space-y-4 p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
           <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Request Reset Token</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+            <h2 className="text-xl font-montserrat font-semibold text-gray-900 dark:text-white mb-2">Request Reset Token</h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 font-sans">
               Enter your email address to generate a password reset token.
             </p>
           </div>

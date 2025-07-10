@@ -14,7 +14,7 @@ export default function Features() {
         <section className="bg-gray-50 dark:bg-[#0f0f0f] py-20 px-6 text-center">
             <div className="max-w-5xl mx-auto">
               
-                <h2 className="text-3xl font-sans md:text-4xl font-bold mb-12 text-gray-900 dark:text-white">
+                <h2 className="text-3xl font-montserrat md:text-4xl font-bold mb-12 text-gray-900 dark:text-white">
 
                     What PolicyPeek Offers
               </h2>

@@ -111,7 +111,7 @@ const SignupPage = () => {
 
                     <Card className="border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg dark:shadow-md transition-colors">
                         <CardHeader className="text-center pb-4">
-                            <CardTitle className="text-xl text-gray-900 dark:text-white">
+                            <CardTitle className="font-montserrat text-xl text-gray-900 dark:text-white">
                                 Create Account
                             </CardTitle>
                             <CardDescription className="text-gray-600 dark:text-gray-400">
@@ -177,7 +177,7 @@ const SignupPage = () => {
 
                                 <Button
                                     type="submit"
-                                    className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className= "font-sans w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                     disabled={isLoading}
                                 >
                                     {isLoading ? 'Creating Account...' : 'Create Account'}
@@ -195,7 +195,7 @@ const SignupPage = () => {
                             </div>
 
                             {/* Google Login Button */}
-                            <GoogleLoginButton text="Sign up with Google" />
+                            <GoogleLoginButton text="Sign up with Google"  />
                         </CardContent>
 
                         {/* Login Link */}

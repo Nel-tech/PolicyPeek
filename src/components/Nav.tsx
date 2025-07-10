@@ -78,7 +78,7 @@ function Nav({ logo, loginText, signupText, authText }: NavTypes) {
                             <Link href="/analyze">
                                 <Button
                                     variant="default"
-                                    className="bg-blue-500 cursor-pointer hover:bg-blue-600 text-white dark:bg-blue-600 dark:hover:bg-blue-700"
+                                        className="bg-blue-500 font-sans cursor-pointer hover:bg-blue-600 text-white dark:bg-blue-600 dark:hover:bg-blue-700"
                                 >
                                     {authText}
                                 </Button>

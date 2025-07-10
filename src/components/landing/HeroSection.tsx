@@ -27,7 +27,7 @@ export default function HeroSection() {
             {/* Main content */}
             <div className="relative z-10 max-w-4xl mx-auto px-6 py-24 mt-[4rem] text-center">
                 
-                    <h1 className="text-3xl font-sans font-extrabold tracking-tight leading-tight mb-4 text-gray-900 dark:text-white md:text-5xl">
+                    <h1 className="text-3xl font-montserrat font-extrabold tracking-tight leading-tight mb-4 text-gray-900 dark:text-white md:text-5xl">
                         Understand Terms & Conditions in Seconds
                     </h1>
 
@@ -39,7 +39,7 @@ export default function HeroSection() {
 
                     <div className="font-sans sm:text-center md:text-center">
                         <Link href='/auth/signup'>
-                            <Button className="bg-blue-600 cursor-pointer hover:bg-blue-700 text-white px-8 py-6 rounded-lg text-base font-semibold transition dark:bg-blue-500 dark:hover:bg-blue-600">
+                            <Button className="bg-blue-600  font-sans cursor-pointer hover:bg-blue-700 text-white px-8 py-6 rounded-lg text-base font-semibold transition dark:bg-blue-500 dark:hover:bg-blue-600">
                                 Try It For Free
                             </Button>
                         </Link>

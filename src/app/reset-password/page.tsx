@@ -31,7 +31,7 @@ function ResetPasswordForm() {
             </header>
             <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
                 <form onSubmit={handleSubmit} className="space-y-4 bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 w-full max-w-md">
-                    <h2 className="text-lg font-semibold text-gray-800 dark:text-white">Reset Your Password</h2>
+                    <h2 className="text-lg font-montserrat font-semibold text-gray-800 dark:text-white">Reset Your Password</h2>
 
                     <input
                         type="text"
@@ -51,7 +51,7 @@ function ResetPasswordForm() {
 
                     <button
                         type="submit"
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition-colors"
+                        className="font-sans w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition-colors"
                     >
                         Reset Password
                     </button>

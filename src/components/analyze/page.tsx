@@ -8,8 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AlertTriangle, FileText, Save, RotateCcw, CheckCircle, FolderOpen, Settings, LogOut, User, Mail, Lock } from "lucide-react";
-import { useModel, useGetAnalysis, useSaveAnalysis, useDeleteAnalysis } from "@/hooks/use-model";
+import { AlertTriangle, FileText, Save, RotateCcw, CheckCircle, FolderOpen, Settings, LogOut, User } from "lucide-react";
+import { useModel, useGetAnalysis, useSaveAnalysis } from "@/hooks/use-model";
 import { toast } from "sonner";
 import { Logo } from "@/components/logo";
 import { useUpdateProfileMutation } from "@/hooks/use-auth";
@@ -21,6 +21,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 import Footer from "../footer";
 import Nav from "../Nav";
+import Loader from "../Loader";
 
 
 
@@ -60,7 +61,7 @@ const AnalyzerScreen = () => {
     const updateProfile = useUpdateProfileMutation();
     const SaveAnlaysis = useSaveAnalysis()
     const { data: UserSummary } = useGetAnalysis()
-    const DeleteUserAnalysis = useDeleteAnalysis()
+    // const DeleteUserAnalysis = useDeleteAnalysis()
     const logout = useAuthStore((state) => state.logout)
     const router = useRouter();
 
@@ -184,24 +185,14 @@ const AnalyzerScreen = () => {
         });
     };
 
-    const handleDelete = (id: string) => {
-        DeleteUserAnalysis.mutate(id)
-    }
+    // const handleDelete = (id: string) => {
+    //     DeleteUserAnalysis.mutate(id)
+    // }
     const handleLogOut = () => {
         logout()
         router.push('/auth/login');
     }
-    const getFlagSeverity = (flag: string): 'high' | 'medium' | 'low' => {
-        const lowerFlag = flag.toLowerCase();
-        if (lowerFlag.includes('biometric') || lowerFlag.includes('sell') || lowerFlag.includes('without notice')) {
-            return 'high';
-        } else if (lowerFlag.includes('third-party') || lowerFlag.includes('collects')) {
-            return 'medium';
-        }
-        return 'low';
-    };
-
-
+   
 
 
 
@@ -228,11 +219,11 @@ const AnalyzerScreen = () => {
                         {/* Tabs */}
                         <Tabs defaultValue="new-analysis" className="space-y-4">
                             <TabsList className="grid w-full grid-cols-3">
-                                <TabsTrigger value="new-analysis" className="flex items-center gap-2 font-sans">
-                                    <FileText className="w-4 h-4 " />
+                                <TabsTrigger value="new-analysis" className=" font-montserrat flex items-center gap-2 ">
+                                    <FileText className="w-4 h-4  " />
                                     New Analysis
                                 </TabsTrigger>
-                                <TabsTrigger value="saved" className="flex items-center gap-2 font-sans">
+                                <TabsTrigger value="saved" className=" font-montserrat flex items-center gap-2">
                                     <FolderOpen className="w-4 h-4" />
                                     My Saved
                                 </TabsTrigger>
@@ -247,11 +238,11 @@ const AnalyzerScreen = () => {
                                 {/* Input Section */}
                                 <Card className="border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-900">
                                     <CardHeader className="pb-3">
-                                        <CardTitle className="text-lg flex font-sans items-center gap-2 text-gray-800 dark:text-gray-100">
+                                        <CardTitle className="text-lg flex font-montserrat items-center gap-2 text-gray-800 dark:text-gray-100">
                                             <FileText className="w-5 h-5 text-blue-600" />
                                             Policy Text
                                         </CardTitle>
-                                        <CardDescription className=" font-sans text-gray-600 dark:text-gray-400">
+                                        <CardDescription className=" font-montserrat text-gray-600 dark:text-gray-400">
                                             Paste the policy document you want to analyze below
                                         </CardDescription>
                                     </CardHeader>
@@ -268,6 +259,9 @@ const AnalyzerScreen = () => {
                                                 disabled={isAnalyzing}
                                                 className="font-sans flex-1 bg-blue-600 hover:bg-blue-700 text-white h-10 cursor-pointer"
                                             >
+                                                {isAnalyzing && (
+                                                    < Loader />
+                                                )}
                                                 {isAnalyzing ? "Analyzing..." : "Analyze Terms"}
                                             </Button>
                                             <Button
@@ -287,8 +281,8 @@ const AnalyzerScreen = () => {
                                         {/* Summary */}
                                         <Card className="border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-900">
                                             <CardHeader className="pb-3">
-                                                <CardTitle className="text-lg flex items-center gap-2 text-gray-800 dark:text-gray-100">
-                                                    <CheckCircle className="font-sans w-5 h-5 text-green-600" />
+                                                <CardTitle className="text-lg font-montserrat flex items-center gap-2 text-gray-800 dark:text-gray-100">
+                                                    <CheckCircle className=" w-5 h-5 text-green-600" />
                                                     Summary
                                                 </CardTitle>
                                             </CardHeader>
@@ -300,7 +294,7 @@ const AnalyzerScreen = () => {
                                         {/* Sensitive Phrases */}
                                         <Card className="border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-900">
                                             <CardHeader className="pb-3">
-                                                <CardTitle className="text-lg font-sans flex items-center gap-2 text-gray-800 dark:text-gray-100">
+                                                <CardTitle className="text-lg font-montserrat flex items-center gap-2 text-gray-800 dark:text-gray-100">
                                                     <AlertTriangle className="w-5 h-5 text-amber-600" />
                                                     Risk Flags
                                                 </CardTitle>
@@ -347,7 +341,7 @@ const AnalyzerScreen = () => {
                             <TabsContent value="saved">
                                 <Card className="border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-900">
                                     <CardHeader>
-                                        <CardTitle className="flex font-sans items-center gap-2 text-gray-800 dark:text-gray-100">
+                                        <CardTitle className="flex font-montserrat items-center gap-2 text-gray-800 dark:text-gray-100">
                                             <FolderOpen className="w-5 h-5 text-blue-600" />
                                             My Saved Analyses
                                         </CardTitle>
@@ -410,7 +404,7 @@ const AnalyzerScreen = () => {
                                     <form onSubmit={handleUpdateProfile}>
                                         <Card className="border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-900">
                                             <CardHeader>
-                                                <CardTitle className="flex items-center gap-2 text-gray-800 dark:text-gray-100 font-sans">
+                                                <CardTitle className="flex font-montserrat items-center gap-2 text-gray-800 dark:text-gray-100">
                                                     <User className="w-5 h-5 text-blue-600" />
                                                     Account Information
                                                 </CardTitle>
@@ -455,7 +449,7 @@ const AnalyzerScreen = () => {
                                     {/* Logout */}
                                     <Card className="border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-900">
                                         <CardHeader>
-                                            <CardTitle className="flex items-center gap-2 text-gray-800 dark:text-gray-100 font-sans">
+                                            <CardTitle className="font-montserrat flex items-center gap-2 text-gray-800 dark:text-gray-100 ">
                                                 <LogOut className="w-5 h-5 text-red-600" />
                                                 Account Actions
                                             </CardTitle>

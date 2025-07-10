@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Open_Sans } from 'next/font/google'
+import {Montserrat, Open_Sans  } from 'next/font/google'
 import { Toaster } from 'sonner'
 import "./globals.css";
 import Providers from "@/app/provider";
@@ -13,6 +13,7 @@ const OpenSans = Open_Sans({
   display: 'swap',
 })
 
+const montserrat = Montserrat({ subsets: ['latin'], weight: '400', variable: '--font-montserrat' });
 
 
 export const metadata: Metadata = {
@@ -69,7 +70,7 @@ export default function RootLayout({
           <meta name="google-site-verification" content="mr6DpKGyOAKnB0eQH0DQByStxObAfiiRoG9BWEtTkAs" />
         </head>
       <body
-        className={`${OpenSans.variable} font-OpenSans`}
+        className={`${OpenSans.variable} font-OpenSans ${montserrat.variable} font-montserrat`}
       >
 
         <Providers>

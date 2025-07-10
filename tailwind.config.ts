@@ -20,7 +20,7 @@ export default {
 		extend: {
 			fontFamily: {
 				OpenSans: ['var(--font-Open_Sans)', 'sans-serif'],
-				sans: ['var(--font-Open_Sans)', 'sans-serif'],
+				montesrrat: ['var(--font-montserrat)', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',

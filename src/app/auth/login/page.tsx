@@ -76,7 +76,7 @@ function LoginPage() {
 
                     <Card className="border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg dark:shadow-md transition-colors">
                         <CardHeader className="text-center pb-4">
-                            <CardTitle className="text-xl text-gray-900 dark:text-white">Welcome Back</CardTitle>
+                            <CardTitle className="font-montserrat text-xl text-gray-900 dark:text-white">Welcome Back</CardTitle>
                             <CardDescription className="text-gray-600 dark:text-gray-400">
                                 Sign in to your account to continue
                             </CardDescription>
@@ -131,10 +131,10 @@ function LoginPage() {
                                     </div>
                                 </div>
 
-                                {/* Submit Button */}
+                               
                                 <Button
                                     type="submit"
-                                    className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+                                    className="font-sans w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
                                     disabled={isLoading}
                                 >
                                     {isLoading ? 'Signing In...' : 'Login'}
