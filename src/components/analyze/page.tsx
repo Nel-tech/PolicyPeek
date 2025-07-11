@@ -21,7 +21,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 import Footer from "../footer";
 import Nav from "../Nav";
-import Loader from "../loader";
+import Loader from "../Loader";
 import { DeleteAccount } from "@/lib/api";
 
 
@@ -248,7 +248,7 @@ const AnalyzerScreen = () => {
                             {/* New Analysis Tab */}
                             <TabsContent value="new-analysis" className="space-y-4">
                                 {/* Input Section */}
-                                <Card className="border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-900">
+                                <Card className=" overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-900">
                                     <CardHeader className="pb-3">
                                         <CardTitle className="text-lg flex font-montserrat items-center gap-2 text-gray-800 dark:text-gray-100">
                                             <FileText className="w-5 h-5 text-blue-600" />
@@ -259,22 +259,32 @@ const AnalyzerScreen = () => {
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-4">
-                                        <Textarea
-                                            placeholder="Paste your Terms & Conditions or Privacy Policy here..."
-                                            value={termsText}
-                                            onChange={(e) => setTermsText(e.target.value)}
-                                            className="font-sans min-h-[120px] resize-none border-gray-200 dark:border-gray-700 focus:border-blue-500 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                                        />
+                                        <div className="relative">
+                                            <Textarea
+                                                placeholder="Paste your Terms & Conditions or Privacy Policy here..."
+                                                value={termsText}
+                                                onChange={(e) => setTermsText(e.target.value)}
+                                                disabled={isAnalyzing}
+                                                className="font-sans min-h-[120px] resize-none border-gray-200 dark:border-gray-700 focus:border-blue-500 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                                            />
+                                            {isAnalyzing && (
+                                                <div className="absolute inset-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm flex items-center justify-center rounded-md">
+                                                    <div className="flex flex-col items-center gap-2">
+                                                        <Loader />
+                                                        <span className="text-sm text-gray-600 dark:text-gray-400 font-montserrat">
+                                                            Analyzing...
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
                                         <div className="flex gap-2">
                                             <Button
                                                 onClick={handleAnalyze}
                                                 disabled={isAnalyzing}
                                                 className="font-sans flex-1 bg-blue-600 hover:bg-blue-700 text-white h-10 cursor-pointer"
                                             >
-                                                {isAnalyzing && (
-                                                    < Loader />
-                                                )}
-                                                {isAnalyzing ? "Analyzing..." : "Analyze Terms"}
+                                                Analyze Terms
                                             </Button>
                                             <Button
                                                 onClick={handleClear}
