@@ -43,7 +43,7 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true });
 
         try {
-          const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/logout`, {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_AUTH_API_URL}/api/auth/logout`, {
             method: 'POST',
             credentials: 'include',
             headers: {
