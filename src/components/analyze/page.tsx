@@ -268,12 +268,17 @@ const AnalyzerScreen = () => {
                                                 className="font-sans min-h-[120px] resize-none border-gray-200 dark:border-gray-700 focus:border-blue-500 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                                             />
                                             {isAnalyzing && (
-                                                <div className="absolute inset-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm flex items-center justify-center rounded-md">
-                                                    <div className="flex flex-col items-center gap-2">
+                                                <div className="absolute inset-0 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm flex items-center justify-center rounded-md z-10">
+                                                    <div className="flex flex-col items-center gap-3 p-4">
                                                         <Loader />
-                                                        <span className="text-sm text-gray-600 dark:text-gray-400 font-montserrat">
-                                                            Analyzing...
-                                                        </span>
+                                                        <div className="text-center">
+                                                            <span className="text-sm text-gray-600 dark:text-gray-400 font-montserrat font-medium">
+                                                                Analyzing your document...
+                                                            </span>
+                                                            <p className="text-xs text-gray-500 dark:text-gray-500 font-sans mt-1">
+                                                                This may take a few moments
+                                                            </p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             )}
@@ -291,7 +296,7 @@ const AnalyzerScreen = () => {
                                                 variant="outline"
                                                 className="font-sans px-4 h-10 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"
                                             >
-                                                <RotateCcw className="w-4 h-4" />
+                                               
                                             </Button>
                                         </div>
                                     </CardContent>
