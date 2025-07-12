@@ -220,11 +220,7 @@ const AnalyzerScreen = () => {
                     <div className="space-y-6 max-h-[80vh] overflow-y-auto">
                         {/* Header */}
                         <div className="text-center">
-                            <div className="inline-flex items-center justify-center mb-3">
-                                <Link href='/'>
-                                    <Logo size="lg" />
-                                </Link>
-                            </div>
+                           
                             <p className="text-lg font-sans text-gray-500  dark:text-gray-400">Summarize and analyze terms instantly</p>
                         </div>
 
