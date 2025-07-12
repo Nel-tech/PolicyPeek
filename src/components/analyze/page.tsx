@@ -21,7 +21,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 import Footer from "../footer";
 import Nav from "../Nav";
-import Loader from '@/components/Loader'
+import AnalyzeLoader from '@/components/AnalyzeLoader'
 import { DeleteAccount } from "@/lib/api";
 
 
@@ -270,7 +270,7 @@ const AnalyzerScreen = () => {
                                             {isAnalyzing && (
                                                 <div className="absolute inset-0 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm flex items-center justify-center rounded-md z-10">
                                                     <div className="flex flex-col items-center gap-3 p-4">
-                                                        <Loader />
+                                                        <AnalyzeLoader />
                                                         <div className="text-center">
                                                             <span className="text-sm text-gray-600 dark:text-gray-400 font-montserrat font-medium">
                                                                 Analyzing your document...
