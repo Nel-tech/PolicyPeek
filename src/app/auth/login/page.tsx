@@ -134,7 +134,7 @@ function LoginPage() {
                                
                                 <Button
                                     type="submit"
-                                    className="font-sans w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+                                    className="font-sans  cursor-pointer w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
                                     disabled={isLoading}
                                 >
                                     {isLoading ? 'Signing In...' : 'Login'}

@@ -177,7 +177,7 @@ const SignupPage = () => {
 
                                 <Button
                                     type="submit"
-                                    className= "font-sans w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className= " cursor-pointer font-sans w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                     disabled={isLoading}
                                 >
                                     {isLoading ? 'Creating Account...' : 'Create Account'}

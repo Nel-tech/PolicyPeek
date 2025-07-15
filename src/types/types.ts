@@ -11,3 +11,23 @@ export interface NavTypes {
   authText?: string;
 }
 
+
+export interface RiskInfo {
+    type: string;
+    severity: string;
+    context: string;
+    matched_text: string;
+}
+
+export interface RisksData {
+    high: RiskInfo[];
+    medium: RiskInfo[];
+    low: RiskInfo[];
+    total_count: number;
+}
+
+export interface RiskScore {
+    score: number;
+    percentage: number;
+    level: string;
+}
