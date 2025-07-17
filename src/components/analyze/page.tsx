@@ -30,15 +30,15 @@ const AnalyzerScreen = () => {
                         <Tabs defaultValue="new-analysis" className="space-y-4">
                             <TabsList className="grid w-full grid-cols-3">
                                 <TabsTrigger value="new-analysis" className="font-montserrat flex items-center gap-2">
-                                    <FileText className="w-4 h-4" />
+                                  
                                     New Analysis
                                 </TabsTrigger>
                                 <TabsTrigger value="saved" className="font-montserrat flex items-center gap-2">
-                                    <FolderOpen className="w-4 h-4" />
+                                   
                                     My Saved
                                 </TabsTrigger>
                                 <TabsTrigger value="settings" className="flex items-center gap-2 font-sans">
-                                    <Settings className="w-4 h-4" />
+                                   
                                     Settings
                                 </TabsTrigger>
                             </TabsList>
