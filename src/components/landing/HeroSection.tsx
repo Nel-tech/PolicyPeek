@@ -25,15 +25,15 @@ export default function HeroSection() {
             </div>
 
             {/* Main content */}
-            <div className="relative z-10 max-w-4xl mx-auto px-6 py-24 mt-[4rem] text-center">
+            <div className="relative z-10 max-w-4xl mx-auto px-6 py-24 mt-[4rem] ">
                 
-                    <h1 className="text-3xl font-montserrat font-extrabold tracking-tight leading-tight mb-4 text-gray-900 dark:text-white md:text-5xl">
+                    <h1 className="text-left lg:text-center md:text-center text-3xl font-montserrat font-medium tracking-tight leading-tight mb-4 text-gray-900 dark:text-white md:text-5xl">
                         Understand Terms & Conditions in Seconds
                     </h1>
 
                     
 
-                    <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mb-8 md:mx-auto">
+                    <p className="tracking-wide text-left lg:text-center md:text-center text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mb-8 md:mx-auto">
                         Let AI summarize privacy policies and hidden clauses so you never have to read long legal documents again.
                     </p>
 
