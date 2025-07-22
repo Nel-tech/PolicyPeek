@@ -27,9 +27,10 @@ export default function HeroSection() {
             {/* Main content */}
             <div className="relative z-10 max-w-4xl mx-auto px-6 py-24 mt-[4rem] ">
                 
-                    <h1 className="text-left lg:text-center md:text-center text-3xl font-montserrat font-medium tracking-tight leading-tight mb-4 text-gray-900 dark:text-white md:text-5xl">
-                        Understand Terms & Conditions in Seconds
-                    </h1>
+                <h1 className="text-3xl md:text-5xl font-montserrat font-medium tracking-tight leading-tight text-gray-900 dark:text-white mb-4 text-left md:text-center">
+                    Understand Terms &amp; Conditions 
+                </h1>
+
 
                     
 
