@@ -36,7 +36,7 @@ export default function HeroSection() {
                     Let AI summarize privacy policies and hidden clauses so you never have to read long legal documents again.
                 </p>
 
-                <div className="text-center">
+                <div className="text-left lg:text-center md:text-center">
                     <Link href="/auth/signup">
                         <Button
                             className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-600 text-white px-8 py-6 rounded-lg text-base font-semibold transition"

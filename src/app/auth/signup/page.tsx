@@ -98,17 +98,9 @@ const SignupPage = () => {
             <header>
                 <Nav logo="/images/Logo.png" authText="" signupText="" loginText="" />
             </header>
-            <div className="min-h-screen mt-[4rem] flex items-center justify-center p-6 bg-gray-50 dark:bg-gray-950 transition-colors">
+            <div className="min-h-screen mt-[2.5rem] flex items-center justify-center p-6 bg-gray-50 dark:bg-gray-950 transition-colors">
                 <div className="w-full max-w-md">
-                    {/* Logo */}
-                    <div className="text-center mb-8">
-                        <div className="inline-flex items-center justify-center mb-4">
-                            <Link href='/'>
-                                <Logo size="lg" />
-                            </Link>
-                        </div>
-                    </div>
-
+                    
                     <Card className="border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg dark:shadow-md transition-colors">
                         <CardHeader className="text-center pb-4">
                             <CardTitle className="font-montserrat text-xl text-gray-900 dark:text-white">

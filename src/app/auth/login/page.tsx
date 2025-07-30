@@ -68,18 +68,10 @@ function LoginPage() {
             {/* Main Content */}
             <main
                 role="main"
-                className="min-h-screen mt-[4rem] flex items-center justify-center p-6 bg-gray-50 dark:bg-gray-950 transition-colors"
+                className="min-h-screen mt-[2.5rem] flex items-center justify-center p-6 bg-gray-50 dark:bg-gray-950 transition-colors"
             >
                 <div className="w-full max-w-md">
-                    {/* Logo */}
-                    <div className="text-center mb-8">
-                        <div className="inline-flex items-center justify-center mb-4">
-                            <Link href="/" aria-label="Go to homepage">
-                                <Logo size="lg" />
-                            </Link>
-                        </div>
-                    </div>
-
+                
                     {/* Auth Card */}
                     <Card
                         className="border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg dark:shadow-md transition-colors"
