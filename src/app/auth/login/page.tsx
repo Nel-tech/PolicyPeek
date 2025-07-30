@@ -60,23 +60,35 @@ function LoginPage() {
     return (
 
         <>
-        <header>
-            <Nav logo="/images/Logo.png" authText="" signupText="" loginText=""/>
-        </header>
-            <div className="min-h-screen mt-[4rem] flex items-center justify-center p-6 bg-gray-50 dark:bg-gray-950 transition-colors">
+            {/* Semantic Header */}
+            <header role="banner">
+                <Nav logo="/images/Logo.png" authText="" signupText="" loginText="" />
+            </header>
+
+            {/* Main Content */}
+            <main
+                role="main"
+                className="min-h-screen mt-[4rem] flex items-center justify-center p-6 bg-gray-50 dark:bg-gray-950 transition-colors"
+            >
                 <div className="w-full max-w-md">
                     {/* Logo */}
                     <div className="text-center mb-8">
                         <div className="inline-flex items-center justify-center mb-4">
-                            <Link href="/">
+                            <Link href="/" aria-label="Go to homepage">
                                 <Logo size="lg" />
                             </Link>
                         </div>
                     </div>
 
-                    <Card className="border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg dark:shadow-md transition-colors">
+                    {/* Auth Card */}
+                    <Card
+                        className="border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg dark:shadow-md transition-colors"
+                        aria-label="Login form"
+                    >
                         <CardHeader className="text-center pb-4">
-                            <CardTitle className="font-montserrat text-xl text-gray-900 dark:text-white">Welcome Back</CardTitle>
+                            <CardTitle className="font-montserrat text-xl text-gray-900 dark:text-white">
+                                Welcome Back
+                            </CardTitle>
                             <CardDescription className="text-gray-600 dark:text-gray-400">
                                 Sign in to your account to continue
                             </CardDescription>
@@ -85,11 +97,14 @@ function LoginPage() {
                         <CardContent>
                             {/* Login Form */}
                             <form onSubmit={handleSubmit} className="space-y-4">
-                                {/* Email Input */}
+                                {/* Email */}
                                 <div className="space-y-2">
                                     <Label htmlFor="email">Email</Label>
                                     <div className="relative">
-                                        <Mail className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                                        <Mail
+                                            className="absolute left-3 top-3 w-4 h-4 text-gray-400"
+                                            aria-hidden="true"
+                                        />
                                         <Input
                                             id="email"
                                             name="email"
@@ -100,15 +115,19 @@ function LoginPage() {
                                             placeholder="Enter your email"
                                             className="pl-10 h-11 border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                                             disabled={isLoading}
+                                            autoComplete="email"
                                         />
                                     </div>
                                 </div>
 
-                                {/* Password Input */}
+                                {/* Password */}
                                 <div className="space-y-2">
                                     <Label htmlFor="password">Password</Label>
                                     <div className="relative">
-                                        <Lock className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                                        <Lock
+                                            className="absolute left-3 top-3 w-4 h-4 text-gray-400"
+                                            aria-hidden="true"
+                                        />
                                         <Input
                                             id="password"
                                             name="password"
@@ -119,6 +138,7 @@ function LoginPage() {
                                             placeholder="Enter your password"
                                             className="pl-10 h-11 border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                                             disabled={isLoading}
+                                            autoComplete="current-password"
                                         />
                                     </div>
                                     <div className="text-right">
@@ -131,11 +151,12 @@ function LoginPage() {
                                     </div>
                                 </div>
 
-                               
+                                {/* Submit */}
                                 <Button
                                     type="submit"
-                                    className="font-sans  cursor-pointer w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+                                    className="font-sans cursor-pointer w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
                                     disabled={isLoading}
+                                    aria-label="Submit login form"
                                 >
                                     {isLoading ? 'Signing In...' : 'Login'}
                                 </Button>
@@ -151,11 +172,11 @@ function LoginPage() {
                                 </div>
                             </div>
 
-                            {/* Google Login Button */}
+                            {/* Google Auth */}
                             <GoogleLoginButton text="Sign in with Google" />
                         </CardContent>
 
-                        {/* Sign up link */}
+                        {/* Signup Link */}
                         <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
                             Don&#39;t have an account?{' '}
                             <Link
@@ -167,13 +188,14 @@ function LoginPage() {
                         </p>
                     </Card>
                 </div>
-            </div>
+            </main>
 
-        
-        <footer>
-            <Footer/>
-        </footer>
+            {/* Semantic Footer */}
+            <footer role="contentinfo">
+                <Footer />
+            </footer>
         </>
+
     )
 
 }
